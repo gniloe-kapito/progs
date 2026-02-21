@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AppHub — Быстрый доступ к программам</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- ============================================================
+    СТРУКТУРА ПАПОК (рекомендуется для GitHub проекта):
+    /
+    ├── index.html          ← этот файл
+    ├── icons/              ← папка с иконками приложений
+    │   ├── chrome.png
+    │   ├── firefox.png
+    │   ├── telegram.png
+    │   └── ...             (PNG/SVG, рекомендуемый размер 64×64 или 128×128)
+    └── README.md
+
+    КАК ДОБАВИТЬ НОВОЕ ПРИЛОЖЕНИЕ:
+    1. Положи иконку в папку icons/ (например: icons/myapp.png)
+    2. Найди нужную категорию в массиве APPS_DATA ниже
+    3. Добавь объект в массив apps категории:
+       {
+         name: "Название",           // отображаемое имя
+         icon: "icons/myapp.png",    // путь к иконке
+         desc: "Описание",           // краткое описание
+         link: "https://...",        // прямая ссылка на скачивание
+         label: "Скачать"            // текст кнопки: "Скачать" или "На сайт"
+       }
+    4. Сохрани файл — готово!
+
+    ЕСЛИ ИКОНКИ НЕТ ЛОКАЛЬНО:
+    Можно использовать внешний URL в поле icon, например:
+    icon: "https://www.google.com/s2/favicons?sz=64&domain=telegram.org"
+  ============================================================ -->
+
+  <style>
+    :root {
+      --bg:        #0d0f14;
+      --surface:   #13161e;
+      --card:      #1a1e29;
+      --border:    #252a38;
+      --accent:    #5b6eff;
+      --accent2:   #00d4aa;
+      --text:      #e8ecf5;
+      --muted:     #7a8099;
+      --radius:    14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Manrope', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── ШАПКА ── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,15,20,.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 clamp(1rem, 4vw, 3rem);
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1.3rem;
+      color: var(--text);
+      text-decoration: none;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .logo span { color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: clamp(3rem, 8vw, 6rem) 1rem clamp(2rem, 5vw, 4rem);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: -40% -20%;
+      background: radial-gradient(ellipse 70% 60% at 50% 30%, rgba(91,110,255,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -.03em;
+      margin-bottom: 1rem;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      color: var(--muted); font-size: 1.05rem; max-width: 520px; margin: 0 auto 2rem;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: rgba(91,110,255,.12); border: 1px solid rgba(91,110,255,.3);
+      color: #a0aaff; font-size: .78rem; font-weight: 600;
+      padding: .3rem .9rem; border-radius: 999px; letter-spacing: .04em;
+      margin-bottom: 1.5rem; text-transform: uppercase;
+    }
+
+    /* ── ФИЛЬТРЫ ── */
+    .filter-bar {
+      display: flex; flex-wrap: wrap; gap: .5rem;
+      justify-content: center; padding: 0 1rem 2.5rem;
+    }
+    .filter-btn {
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); font-family: 'Manrope', sans-serif;
+      font-size: .82rem; font-weight: 600; padding: .45rem 1.1rem;
+      border-radius: 999px; cursor: pointer; transition: all .2s;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+    .filter-btn.active {
+      background: var(--accent); border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* ── КОНТЕНТ ── */
+    main {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 clamp(1rem, 3vw, 2.5rem) 4rem;
+    }
+
+    /* ── СЕКЦИИ ── */
+    .section {
+      margin-bottom: 3rem;
+      transition: opacity .3s;
+    }
+    .section.hidden { display: none; }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 1.1rem;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+      padding-bottom: .6rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .section-title::before {
+      content: ''; display: block;
+      width: 4px; height: 18px; border-radius: 2px;
+      background: linear-gradient(180deg, var(--accent), var(--accent2));
+    }
+
+    /* ── СЕТКА КАРТОЧЕК ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    /* ── КАРТОЧКА ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex; flex-direction: column; gap: .85rem;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+      position: relative; overflow: hidden;
+    }
+    .card::after {
+      content: ''; position: absolute;
+      inset: 0; border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(91,110,255,.06) 0%, transparent 60%);
+      opacity: 0; transition: opacity .25s;
+      pointer-events: none;
+    }
+    .card:hover {
+      border-color: rgba(91,110,255,.5);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0,0,0,.3);
+    }
+    .card:hover::after { opacity: 1; }
+
+    .card-head {
+      display: flex; align-items: center; gap: .9rem;
+    }
+    .app-icon {
+      width: 48px; height: 48px; border-radius: 10px;
+      object-fit: contain;
+      background: var(--surface);
+      flex-shrink: 0;
+      /* Если иконка не загрузилась — показываем заглушку */
+    }
+    .app-icon-fallback {
+      width: 48px; height: 48px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+    .app-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 1rem; line-height: 1.2;
+    }
+
+    .card-desc {
+      color: var(--muted); font-size: .85rem; line-height: 1.55;
+      flex: 1;
+    }
+
+    .dl-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: .45rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      font-family: 'Manrope', sans-serif; font-weight: 700; font-size: .83rem;
+      padding: .6rem 1.1rem; border-radius: 8px;
+      text-decoration: none; cursor: pointer;
+      transition: all .2s; align-self: flex-start;
+    }
+    .dl-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .dl-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* Предупреждение о непроверенных файлах */
+    .warn-badge {
+      display: inline-flex; align-items: center; gap: .35rem;
+      background: rgba(255, 160, 30, .12);
+      border: 1px solid rgba(255, 160, 30, .4);
+      color: #ffb347;
+      font-size: .75rem; font-weight: 700;
+      padding: .3rem .75rem; border-radius: 6px;
+      letter-spacing: .02em;
+    }
+    .warn-badge svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    /* ── ФУТЕР ── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center; color: var(--muted);
+      font-size: .82rem; padding: 2rem 1rem;
+    }
+
+    /* ── АДАПТИВ ── */
+    @media (max-width: 500px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">App<span>Hub</span></a>
+  <span style="color:var(--muted);font-size:.8rem;">Только официальные источники</span>
+</header>
+
+<section class="hero">
+  <div class="badge">🚀 Быстрый доступ</div>
+  <h1>Все нужные<br>программы <em>в одном месте</em></h1>
+  <p>Подборка проверенного софта. Загрузки только с официальных сайтов и GitHub.</p>
+</section>
+
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-cat="all">Все</button>
+  <!-- Кнопки категорий генерируются автоматически -->
+</div>
+
+<main id="mainContent"></main>
+
+<footer>
+  Все программы загружаются из официальных источников &nbsp;·&nbsp; AppHub
+</footer>
+
+<script>
+// ================================================================
+//  ✏️  РЕДАКТИРУЙ ТОЛЬКО ЭТОТ БЛОК — ДАННЫЕ ПРИЛОЖЕНИЙ
+//
+//  Структура одной категории:
+//  {
+//    id: "уникальный-id",          // используется для фильтрации (без пробелов)
+//    name: "Название категории",
+//    apps: [
+//      {
+//        name: "Название",
+//        icon: "icons/file.png",   // путь к иконке в папке icons/
+//                                  // или внешний URL
+//                                  // или "" — тогда покажется заглушка с первой буквой
+//        desc: "Краткое описание",
+//        link: "https://...",      // ссылка на скачивание или страницу
+//        label: "Скачать"          // текст кнопки: "Скачать" или "На сайт"
+//      },
+//    ]
+//  }
+// ================================================================
+
+const APPS_DATA = [
+  {
+    id: "browsers",
+    name: "Браузеры",
+    apps: [
+      {
+        name: "Google Chrome",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=chrome.google.com",
+        desc: "Самый популярный браузер с богатой экосистемой расширений и быстрой работой.",
+        link: "https://www.google.com/chrome/",
+        label: "На сайт"
+      },
+      {
+        name: "Mozilla Firefox",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=firefox.com",
+        desc: "Быстрый и приватный браузер с открытым исходным кодом на движке Gecko.",
+        link: "https://download.mozilla.org/?product=firefox-stub&os=win&lang=ru",
+        label: "Скачать"
+      },
+      {
+        name: "Brave",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=brave.com",
+        desc: "Приватный браузер со встроенным блокировщиком рекламы и трекеров.",
+        link: "https://laptop-updates.brave.com/download/BRV010?bitness=64",
+        label: "Скачать"
+      },
+      {
+        name: "Vivaldi",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=vivaldi.com",
+        desc: "Браузер с гибкой настройкой интерфейса на базе Chromium.",
+        link: "https://vivaldi.com/download/",
+        label: "На сайт"
+      },
+    ]
+  },
+  {
+    id: "messengers",
+    name: "Мессенджеры",
+    apps: [
+      {
+        name: "Telegram",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=telegram.org",
+        desc: "Самый популярный мессенджер с облачным хранением и мощными ботами.",
+        link: "https://telegram.org/dl/desktop/win64",
+        label: "Скачать"
+      },
+      {
+        name: "AyuGram",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=github.com",
+        desc: "Форк Telegram Desktop с расширенными функциями: история удалённых сообщений, антиудаление и кастомизация интерфейса.",
+        link: "https://github.com/AyuGram/AyuGramDesktop",
+        label: "На сайт"
+      },
+      {
+        name: "Discord",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=discord.com",
+        desc: "Голосовые и текстовые чаты для геймеров и сообществ.",
+        link: "https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x64",
+        label: "Скачать"
+      },
+      {
+        name: "Vencord",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=vencord.dev",
+        desc: "Мод-инсталлятор для Discord: бесплатные фичи Nitro, огромная библиотека плагинов и тем оформления.",
+        link: "https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.exe",
+        label: "Скачать"
+      },
+      {
+        name: "Rave",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=getraveapp.com",
+        desc: "Приложение для совместного просмотра фильмов и стримов с друзьями в реальном времени.",
+        link: "https://getraveapp.com/windows",
+        label: "Скачать"
+      },
+    ]
+  },
+  {
+    id: "media",
+    name: "Медиа и плееры",
+    apps: [
+      {
+        name: "VLC",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=videolan.org",
+        desc: "Легендарный медиаплеер с поддержкой всех форматов и потокового видео.",
+        link: "https://get.videolan.org/vlc/3.0.21/win64/vlc-3.0.21-win64.exe",
+        label: "Скачать"
+      },
+      {
+        name: "MPC-HC",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=github.com",
+        desc: "Лёгкий и быстрый видеоплеер с поддержкой огромного числа кодеков. Активно поддерживаемый форк оригинального MPC.",
+        link: "https://github.com/clsid2/mpc-hc/releases/",
+        label: "На сайт"
+      },
+      {
+        name: "Audacity",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=audacityteam.org",
+        desc: "Бесплатный редактор звука с мультидорожечной записью и множеством эффектов.",
+        link: "https://www.audacityteam.org/download/",
+        label: "На сайт"
+      },
+      {
+        name: "HandBrake",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=handbrake.fr",
+        desc: "Конвертер видео с гибкой настройкой кодеков. Идеален для сжатия и перекодировки видеофайлов.",
+        link: "https://handbrake.fr/rotation.php?file=HandBrake-1.8.2-x86_64-Win_GUI.exe",
+        label: "Скачать"
+      },
+      {
+        name: "Plex Media Server",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=plex.tv",
+        desc: "Персональный медиасервер: стримь свою коллекцию фильмов, музыки и фото на любые устройства.",
+        link: "https://www.plex.tv/media-server-downloads/",
+        label: "На сайт"
+      },
+      {
+        name: "Яндекс Музыка",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=music.yandex.ru",
+        desc: "Десктопное приложение Яндекс Музыки с офлайн-режимом и синхронизацией плейлистов.",
+        link: "https://music.yandex.ru/download/?autodownload=1",
+        label: "Скачать"
+      },
+      {
+        name: "SpotX",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=spotify.com",
+        desc: "Патчер Spotify: блокирует рекламу, снимает ограничения бесплатного аккаунта.",
+        link: "https://github.com/SpotX-Official/SpotX/releases",
+        label: "На сайт"
+      },
+    ]
+  },
+  {
+    id: "utils",
+    name: "Утилиты",
+    apps: [
+      {
+        name: "7-Zip",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=7-zip.org",
+        desc: "Лучший архиватор с открытым кодом. Поддерживает все форматы архивов.",
+        link: "https://7-zip.org/a/7z2408-x64.exe",
+        label: "Скачать"
+      },
+      {
+        name: "OBS Studio",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=obsproject.com",
+        desc: "Лучшая программа для стриминга и записи экрана. Бесплатно и без ограничений.",
+        link: "https://obsproject.com/download",
+        label: "На сайт"
+      },
+      {
+        name: "qBittorrent",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=qbittorrent.org",
+        desc: "Популярный торрент-клиент без рекламы с открытым исходным кодом.",
+        link: "https://www.qbittorrent.org/download",
+        label: "На сайт"
+      },
+      {
+        name: "ShareX",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=getsharex.com",
+        desc: "Мощный инструмент для скриншотов, записи экрана и загрузки файлов.",
+        link: "https://github.com/ShareX/ShareX/releases/latest",
+        label: "На сайт"
+      },
+      {
+        name: "AnyDesk",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=anydesk.com",
+        desc: "Программа для удалённого управления рабочим столом с минимальной задержкой.",
+        link: "https://anydesk.com/en/downloads/",
+        label: "На сайт"
+      },
+      {
+        name: "Notepad++",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=notepad-plus-plus.org",
+        desc: "Мощный текстовый редактор с подсветкой синтаксиса для сотни языков программирования.",
+        link: "https://notepad-plus-plus.org/downloads/",
+        label: "На сайт"
+      },
+      {
+        name: "Mem Reduct",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=github.com",
+        desc: "Лёгкая утилита для мониторинга и очистки оперативной памяти в реальном времени.",
+        link: "https://github.com/henrypp/memreduct/releases",
+        label: "На сайт"
+      },
+      {
+        name: "DroidCam",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=droidcam.app",
+        desc: "Превращает смартфон в веб-камеру или микрофон для ПК. Подключение по Wi-Fi или USB.",
+        link: "https://droidcam.app/windows/#step1",
+        label: "На сайт"
+      },
+      {
+        name: "MakuTweaker",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=adderly.top",
+        desc: "Твикер Windows от Adderly.Top для тонкой настройки системы и оптимизации производительности.",
+        link: "https://adderly.top/makutweaker",
+        label: "На сайт"
+      },
+      {
+        name: "TwitchLink",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=twitch.tv",
+        desc: "Программа для скачивания стримов, клипов и VOD с Twitch. Поддерживает выбор качества и временных меток.",
+        link: "https://github.com/devhotteok/TwitchLink/releases/download/3.2.0/TwitchLinkSetup-3.2.0.exe",
+        label: "Скачать"
+      },
+      {
+        name: "Windhawk",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=ramensoftware.com",
+        desc: "Маркетплейс модов для Windows: кастомизация Taskbar, Проводника, меню Пуск и других системных компонентов.",
+        link: "https://ramensoftware.com/downloads/windhawk_setup.exe",
+        label: "Скачать"
+      },
+      {
+        name: "Flibustier64",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=flibustier64.com",
+        desc: "Официальный фан-сайт сборок Windows от Флибустьера — коллекция всех официальных и пересмотренных версий Windows от автора для установки на ПК.",
+        link: "https://flibustier64.com/",
+        label: "На сайт"
+      },
+    ]
+  },
+  {
+    id: "creative",
+    name: "Творчество",
+    apps: [
+      {
+        name: "FL Studio",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=image-line.com",
+        desc: "Профессиональная DAW для создания музыки, битов и сведения треков. Пожизненные бесплатные обновления.",
+        link: "https://mega.nz/file/Q3kBETwa#ZN_iJ4im2i61r-i-cKdlwTae14tBfetpHPbrxsRXTMs",
+        label: "Скачать",
+        warn: "Файл не проверялся на вирусы — скачивай на свой страх и риск"
+      },
+      {
+        name: "Adobe Photoshop",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=adobe.com",
+        desc: "Профессиональный редактор изображений. Ретушь, дизайн, работа со слоями и фильтрами.",
+        link: "https://drive.google.com/file/d/1p0OKceLjJw8e_0VpDaTCXVJRaVY3PclY/view?usp=sharing",
+        label: "Скачать",
+        warn: "Файл не проверялся на вирусы — скачивай на свой страх и риск"
+      },
+    ]
+  },
+  {
+    id: "dev",
+    name: "Для разработчиков",
+    apps: [
+      {
+        name: "VS Code",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=code.visualstudio.com",
+        desc: "Лёгкий и мощный редактор кода от Microsoft с огромной библиотекой расширений.",
+        link: "https://code.visualstudio.com/",
+        label: "На сайт"
+      },
+      {
+        name: "Git",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=git-scm.com",
+        desc: "Система контроля версий. Необходима для работы с GitHub и любыми проектами.",
+        link: "https://git-scm.com/download/win",
+        label: "Скачать"
+      },
+      {
+        name: "PyCharm",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=jetbrains.com",
+        desc: "Профессиональная среда разработки для Python от JetBrains.",
+        link: "https://www.jetbrains.com/pycharm/download/",
+        label: "На сайт"
+      },
+    ]
+  },
+  {
+    id: "libs",
+    name: "Библиотеки и среды",
+    apps: [
+      {
+        name: "Java 8",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=oracle.com",
+        desc: "Java 8 — лучшая версия для запуска Minecraft до версии 1.12 и старых программ.",
+        link: "https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html",
+        label: "На сайт"
+      },
+      {
+        name: "Java 17",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=oracle.com",
+        desc: "Java 17 — рекомендуемая версия для Minecraft 1.17–1.20 и современных Java-приложений.",
+        link: "https://download.oracle.com/java/17/archive/jdk-17.0.11_windows-x64_bin.msi",
+        label: "Скачать"
+      },
+      {
+        name: "Java 21",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=oracle.com",
+        desc: "Java 21 LTS — актуальная версия с долгосрочной поддержкой. Требуется для Minecraft 1.20.5+.",
+        link: "https://download.oracle.com/java/21/archive/jdk-21.0.3_windows-x64_bin.msi",
+        label: "Скачать"
+      },
+    ]
+  },
+  {
+    id: "games",
+    name: "Игры и лаунчеры",
+    apps: [
+      {
+        name: "Steam",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=steampowered.com",
+        desc: "Главная игровая платформа с тысячами игр, облачными сохранениями и магазином.",
+        link: "https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe",
+        label: "Скачать"
+      },
+      {
+        name: "Epic Games",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=epicgames.com",
+        desc: "Лаунчер с регулярными бесплатными раздачами популярных игр.",
+        link: "https://store.epicgames.com/download",
+        label: "На сайт"
+      },
+      {
+        name: "Riot Games",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=riotgames.com",
+        desc: "Лаунчер Riot для запуска League of Legends, Valorant, Teamfight Tactics и других игр студии.",
+        link: "https://valorant.secure.dyn.riotcdn.net/channels/public/x/installer/current/live.live.eu.exe",
+        label: "Скачать"
+      },
+      {
+        name: "Prism Launcher",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=prismlauncher.org",
+        desc: "Продвинутый лаунчер Minecraft с поддержкой нескольких аккаунтов, модпаков и кастомных инстанций.",
+        link: "https://github.com/PrismLauncher/PrismLauncher/releases/download/10.0.5/PrismLauncher-Windows-MSVC-Setup-10.0.5.exe",
+        label: "Скачать"
+      },
+    ]
+  },
+  {
+    id: "diagnostics",
+    name: "Диагностика",
+    apps: [
+      {
+        name: "CPU-Z",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=cpuid.com",
+        desc: "Информация о процессоре, материнской плате, оперативной памяти и видеокарте.",
+        link: "https://download.cpuid.com/cpu-z/cpu-z_2.10-en.exe",
+        label: "Скачать"
+      },
+      {
+        name: "CrystalDiskInfo",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=crystalmark.info",
+        desc: "Мониторинг здоровья жёстких дисков и SSD через показатели S.M.A.R.T.",
+        link: "https://crystalmark.info/en/software/crystaldiskinfo/",
+        label: "На сайт"
+      },
+      {
+        name: "FurMark",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=geeks3d.com",
+        desc: "Стресс-тест для видеокарты. Максимально нагружает GPU для проверки стабильности, температур и охлаждения.",
+        link: "https://geeks3d.com/furmark/",
+        label: "На сайт"
+      },
+    ]
+  },
+  {
+    id: "vpn",
+    name: "VPN",
+    apps: [
+      {
+        name: "Outline VPN",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=getoutline.org",
+        desc: "Простой VPN от Jigsaw (Google). Идеально для обхода блокировок.",
+        link: "https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe",
+        label: "Скачать"
+      },
+      {
+        name: "Amnezia VPN",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=amnezia.org",
+        desc: "Российский приватный VPN-клиент с открытым кодом на GitHub.",
+        link: "https://github.com/amnezia-vpn/amnezia-client/releases/latest",
+        label: "На сайт"
+      },
+      {
+        name: "Radmin VPN",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=radmin-vpn.com",
+        desc: "Бесплатный VPN для игры в локальную сеть: Minecraft, GTA и другие игры с друзьями по всему миру.",
+        link: "https://download.radmin-vpn.com/download/files/Radmin_VPN_1.4.4642.1.exe",
+        label: "Скачать"
+      },
+      {
+        name: "Windscribe VPN",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=windscribe.com",
+        desc: "VPN с щедрым бесплатным тарифом 10 ГБ/месяц, встроенным блокировщиком рекламы и серверами в 60+ странах.",
+        link: "https://windscribe.com/install/desktop/windows",
+        label: "Скачать"
+      },
+    ]
+  },
+  {
+    id: "security",
+    name: "Безопасность",
+    apps: [
+      {
+        name: "Dr.Web CureIt",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=drweb.ru",
+        desc: "Бесплатный сканер вирусов с ежедневно обновляемыми базами. Не требует установки.",
+        link: "https://free.drweb.ru/download+cureit/gr",
+        label: "Скачать"
+      },
+    ]
+  },
+  {
+    id: "flash",
+    name: "Работа с флешками",
+    apps: [
+      {
+        name: "Rufus",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=rufus.ie",
+        desc: "Самая популярная программа для создания загрузочных флешек с Windows. Быстрая и надёжная.",
+        link: "https://github.com/pbatard/rufus/releases/download/v4.5/rufus-4.5p.exe",
+        label: "Скачать"
+      },
+      {
+        name: "Ventoy",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=ventoy.net",
+        desc: "Запись нескольких ISO-образов на одну флешку одновременно. Не нужно форматировать каждый раз.",
+        link: "https://sourceforge.net/projects/ventoy/files/latest/download",
+        label: "Скачать"
+      },
+      {
+        name: "balenaEtcher",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=balena.io",
+        desc: "Простая и надёжная запись образов Linux и других ОС на флешки и SD-карты.",
+        link: "https://github.com/balena-io/etcher/releases/download/v1.19.21/balenaEtcher-1.19.21.Setup.exe",
+        label: "Скачать"
+      },
+    ]
+  },
+  {
+    id: "vm",
+    name: "Виртуальные машины",
+    apps: [
+      {
+        name: "VirtualBox",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=virtualbox.org",
+        desc: "Бесплатная виртуальная машина от Oracle. Запускай Linux, Windows и другие ОС внутри своей системы.",
+        link: "https://download.virtualbox.org/virtualbox/7.0.20/VirtualBox-7.0.20-163906-Win.exe",
+        label: "Скачать"
+      },
+      {
+        name: "VMware Workstation",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=vmware.com",
+        desc: "Профессиональная виртуальная машина с поддержкой снимков состояния, сети и высокой производительностью.",
+        link: "https://mega.nz/file/licTgQQY#nHz94ziFh4gQg0K1cRS57Cn7zQ1LDIzWWpZ4mtaf35Y",
+        label: "Скачать"
+      },
+    ]
+  },
+  {
+    id: "drivers",
+    name: "Драйверы",
+    apps: [
+      {
+        name: "NVIDIA App",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=nvidia.com",
+        desc: "Новое приложение NVIDIA: управление драйверами, запись реплеев с GeForce Experience и оптимизация игр.",
+        link: "https://www.nvidia.com/en-us/software/nvidia-app/",
+        label: "На сайт"
+      },
+      {
+        name: "AMD Software Adrenalin",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=amd.com",
+        desc: "Официальная панель управления видеокартами AMD с драйверами, Radeon ReLive и настройкой производительности.",
+        link: "https://www.amd.com/en/support/download/drivers.html",
+        label: "На сайт"
+      },
+    ]
+  },
+];
+// ================================================================
+//  ☝️  КОНЕЦ БЛОКА ДАННЫХ — НИЖЕ НЕ ТРОГАЙ (если не знаешь зачем)
+// ================================================================
+
+// SVG-иконки кнопок
+const ICON_DOWNLOAD = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+const ICON_EXTERNAL = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+
+function buildUI() {
+  const filterBar = document.getElementById('filterBar');
+  const main = document.getElementById('mainContent');
+
+  // Генерируем кнопки фильтрации
+  APPS_DATA.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.cat = cat.id;
+    btn.textContent = cat.name;
+    filterBar.appendChild(btn);
+  });
+
+  // Генерируем секции и карточки
+  APPS_DATA.forEach(cat => {
+    const section = document.createElement('section');
+    section.className = 'section';
+    section.dataset.cat = cat.id;
+
+    const title = document.createElement('h2');
+    title.className = 'section-title';
+    title.textContent = cat.name;
+    section.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+
+    cat.apps.forEach(app => {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      // Иконка
+      let iconHTML;
+      if (app.icon) {
+        iconHTML = `<img class="app-icon" src="${app.icon}" alt="${app.name}"
+                        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="app-icon-fallback" style="display:none">${app.name[0]}</div>`;
+      } else {
+        iconHTML = `<div class="app-icon-fallback">${app.name[0]}</div>`;
+      }
+
+      const btnIcon = app.label === 'Скачать' ? ICON_DOWNLOAD : ICON_EXTERNAL;
+
+      const warnHTML = app.warn
+        ? `<span class="warn-badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>${app.warn}</span>`
+        : '';
+
+      card.innerHTML = `
+        <div class="card-head">
+          ${iconHTML}
+          <span class="app-name">${app.name}</span>
+        </div>
+        <p class="card-desc">${app.desc}</p>
+        ${warnHTML}
+        <a class="dl-btn" href="${app.link}" target="_blank" rel="noopener">
+          ${btnIcon} ${app.label}
+        </a>
+      `;
+
+      grid.appendChild(card);
+    });
+
+    section.appendChild(grid);
+    main.appendChild(section);
+  });
+
+  // Фильтрация
+  filterBar.addEventListener('click', e => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+
+    filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cat = btn.dataset.cat;
+    document.querySelectorAll('.section').forEach(sec => {
+      sec.classList.toggle('hidden', cat !== 'all' && sec.dataset.cat !== cat);
+    });
+  });
+}
+
+buildUI();
+</script>
+</body>
+</html>
