@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AppHub — Быстрый доступ к программам</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- Open Graph — превью при отправке ссылки в Discord, Telegram, VK -->
+  <meta property="og:title" content="AppHub — Быстрый доступ к программам">
+  <meta property="og:description" content="Подборка проверенного софта. Загрузки только с официальных сайтов и GitHub.">
+  <meta property="og:image" content="https://gniloe-kapito.github.io/progs/preview.png">
+  <meta property="og:url" content="https://gniloe-kapito.github.io/progs/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
 
@@ -524,11 +532,39 @@ const APPS_DATA = [
         label: "Скачать"
       },
       {
+        name: "LibreOffice",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=libreoffice.org",
+        desc: "Полноценная и бесплатная замена Microsoft Office. Поддерживает форматы .docx, .xlsx, .pptx. Включает Writer, Calc, Impress и Draw.",
+        link: "https://www.libreoffice.org/download/download-libreoffice/",
+        label: "На сайт"
+      },
+      {
         name: "Flibustier64",
         icon: "https://www.google.com/s2/favicons?sz=64&domain=flibustier64.com",
         desc: "Официальный фан-сайт сборок Windows от Флибустьера — коллекция всех официальных и пересмотренных версий Windows от автора для установки на ПК.",
         link: "https://flibustier64.com/",
         label: "На сайт"
+      },
+      {
+        name: "Microsoft PowerToys",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=microsoft.com",
+        desc: "Официальный набор мастхэв-утилит от Microsoft: цветовая пипетка, FancyZones для управления окнами, массовое переименование файлов, быстрый просмотр и многое другое.",
+        link: "https://github.com/microsoft/PowerToys/releases/latest",
+        label: "На сайт"
+      },
+      {
+        name: "Everything",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=voidtools.com",
+        desc: "Мгновенный поиск любых файлов и папок на ПК. Работает в сотни раз быстрее стандартного поиска Windows.",
+        link: "https://www.voidtools.com/downloads/",
+        label: "На сайт"
+      },
+      {
+        name: "Revo Uninstaller",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=revouninstaller.com",
+        desc: "Глубокое удаление программ с автоматической чисткой остаточных файлов и записей в реестре. Portable-версия.",
+        link: "https://mega.nz/file/16lRVZrB#PRbEPyWlLuAkbrrkSaA0jKbax0ZaY21R7sEuB4XfG2c",
+        label: "Скачать"
       },
     ]
   },
@@ -640,6 +676,13 @@ const APPS_DATA = [
         link: "https://github.com/PrismLauncher/PrismLauncher/releases/download/10.0.5/PrismLauncher-Windows-MSVC-Setup-10.0.5.exe",
         label: "Скачать"
       },
+      {
+        name: "SAM (Ачивки Steam)",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=github.com",
+        desc: "Утилита для управления достижениями в Steam: разблокировка и блокировка ачивок для любой игры в библиотеке.",
+        link: "https://github.com/gibbed/SteamAchievementManager/releases",
+        label: "На сайт"
+      },
     ]
   },
   {
@@ -654,6 +697,13 @@ const APPS_DATA = [
         label: "Скачать"
       },
       {
+        name: "GPU-Z",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=techpowerup.com",
+        desc: "Детальная информация о видеокарте: частоты, температуры, объём памяти, пропускная способность и нагрузка в реальном времени.",
+        link: "https://www.techpowerup.com/download/techpowerup-gpu-z/",
+        label: "На сайт"
+      },
+      {
         name: "CrystalDiskInfo",
         icon: "https://img.utdstc.com/icon/217/fdb/217fdbc48ae682e8519f8e95ba735c4aad4ce2345a7267669b9f792004f0a168:200",
         desc: "Мониторинг здоровья жёстких дисков и SSD через показатели S.M.A.R.T.",
@@ -665,6 +715,13 @@ const APPS_DATA = [
         icon: "https://www.google.com/s2/favicons?sz=64&domain=geeks3d.com",
         desc: "Стресс-тест для видеокарты. Максимально нагружает GPU для проверки стабильности, температур и охлаждения.",
         link: "https://geeks3d.com/furmark/",
+        label: "На сайт"
+      },
+      {
+        name: "HWiNFO64",
+        icon: "https://www.google.com/s2/favicons?sz=64&domain=hwinfo.com",
+        desc: "Самая подробная утилита для мониторинга всех датчиков системы: температуры, нагрузки, напряжений CPU, GPU, дисков в реальном времени.",
+        link: "https://www.hwinfo.com/download/",
         label: "На сайт"
       },
     ]
