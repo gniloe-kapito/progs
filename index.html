@@ -20,7 +20,7 @@
     СТРУКТУРА ПАПОК (рекомендуется для GitHub проекта):
     /
     ├── index.html          ← этот файл
-    ├── icons/              ← папка с иконками приложений
+    ├── ico/              ← папка с иконками приложений
     │   ├── chrome.png
     │   ├── firefox.png
     │   ├── telegram.png
@@ -28,12 +28,12 @@
     └── README.md
 
     КАК ДОБАВИТЬ НОВОЕ ПРИЛОЖЕНИЕ:
-    1. Положи иконку в папку icons/ (например: icons/myapp.png)
+    1. Положи иконку в папку ico/ (например: ico/myapp.png)
     2. Найди нужную категорию в массиве APPS_DATA ниже
     3. Добавь объект в массив apps категории:
        {
          name: "Название",           // отображаемое имя
-         icon: "icons/myapp.png",    // путь к иконке
+         icon: "ico/myapp.png",    // путь к иконке
          desc: "Описание",           // краткое описание
          link: "https://...",        // прямая ссылка на скачивание
          label: "Скачать"            // текст кнопки: "Скачать" или "На сайт"
@@ -314,7 +314,7 @@
 //    apps: [
 //      {
 //        name: "Название",
-//        icon: "icons/file.png",   // путь к иконке в папке icons/
+//        icon: "ico/file.png",   // путь к иконке в папке ico/
 //                                  // или внешний URL
 //                                  // или "" — тогда покажется заглушка с первой буквой
 //        desc: "Краткое описание",
@@ -332,28 +332,28 @@ const APPS_DATA = [
     apps: [
       {
         name: "Google Chrome",
-        icon: "icons/google_chrome.png",
+        icon: "ico/google_chrome.png",
         desc: "Самый популярный браузер с богатой экосистемой расширений и быстрой работой.",
         link: "https://www.google.com/chrome/",
         label: "На сайт"
       },
       {
         name: "Mozilla Firefox",
-        icon: "icons/mozilla_firefox.png",
+        icon: "ico/mozilla_firefox.png",
         desc: "Быстрый и приватный браузер с открытым исходным кодом на движке Gecko.",
         link: "https://download.mozilla.org/?product=firefox-stub&os=win&lang=ru",
         label: "Скачать"
       },
       {
         name: "Brave",
-        icon: "icons/brave.png",
+        icon: "ico/brave.png",
         desc: "Приватный браузер со встроенным блокировщиком рекламы и трекеров.",
         link: "https://laptop-updates.brave.com/download/BRV010?bitness=64",
         label: "Скачать"
       },
       {
         name: "Яндекс Браузер",
-        icon: "icons/yandeks_brauzer.png",
+        icon: "ico/yandeks_brauzer.png",
         desc: "Быстрый браузер на Chromium с встроенным переводчиком, защитой от слежки и голосовым ассистентом Алисой.",
         link: "https://browser.yandex.ru/",
         label: "На сайт"
@@ -366,42 +366,42 @@ const APPS_DATA = [
     apps: [
       {
         name: "Telegram",
-        icon: "icons/telegram.png",
+        icon: "ico/telegram.png",
         desc: "Самый популярный мессенджер с облачным хранением и мощными ботами.",
         link: "https://telegram.org/dl/desktop/win64",
         label: "Скачать"
       },
       {
         name: "Мессенджер MAX",
-        icon: "icons/messendzher_max.png",
+        icon: "ico/messendzher_max.png",
         desc: "Мессенджер от VK с голосовыми и видеозвонками, каналами, ботами и интеграцией с экосистемой Mail.ru. Ловит даже на парковки",
         link: "https://download.max.ru/#desktop",
         label: "На сайт"
       },
       {
         name: "AyuGram",
-        icon: "icons/ayugram.png",
+        icon: "ico/ayugram.png",
         desc: "Форк Telegram Desktop с расширенными функциями: история удалённых сообщений, антиудаление и кастомизация интерфейса.",
         link: "https://github.com/AyuGram/AyuGramDesktop",
         label: "На сайт"
       },
       {
         name: "Discord",
-        icon: "icons/discord.png",
+        icon: "ico/discord.png",
         desc: "Голосовые и текстовые чаты для геймеров и сообществ.",
         link: "https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x64",
         label: "Скачать"
       },
       {
         name: "Vencord",
-        icon: "icons/vencord.png",
+        icon: "ico/vencord.png",
         desc: "Мод-инсталлятор для Discord: бесплатные фичи Nitro, огромная библиотека плагинов и тем оформления.",
         link: "https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.exe",
         label: "Скачать"
       },
       {
         name: "Rave",
-        icon: "icons/rave.png",
+        icon: "ico/rave.png",
         desc: "Приложение для совместного просмотра фильмов и стримов с друзьями в реальном времени.",
         link: "https://getraveapp.com/windows",
         label: "Скачать"
@@ -414,49 +414,49 @@ const APPS_DATA = [
     apps: [
       {
         name: "VLC",
-        icon: "icons/vlc.png",
+        icon: "ico/vlc.png",
         desc: "Легендарный медиаплеер с поддержкой всех форматов и потокового видео.",
         link: "https://get.videolan.org/vlc/3.0.21/win64/vlc-3.0.21-win64.exe",
         label: "Скачать"
       },
       {
         name: "MPC-HC",
-        icon: "icons/mpc_hc.png",
+        icon: "ico/mpc_hc.png",
         desc: "Лёгкий и быстрый видеоплеер с поддержкой огромного числа кодеков. Активно поддерживаемый форк оригинального MPC.",
         link: "https://github.com/clsid2/mpc-hc/releases/",
         label: "На сайт"
       },
       {
         name: "Audacity",
-        icon: "icons/audacity.png",
+        icon: "ico/audacity.png",
         desc: "Бесплатный редактор звука с мультидорожечной записью и множеством эффектов.",
         link: "https://www.audacityteam.org/download/",
         label: "На сайт"
       },
       {
         name: "HandBrake",
-        icon: "icons/handbrake.png",
+        icon: "ico/handbrake.png",
         desc: "Конвертер видео с гибкой настройкой кодеков. Идеален для сжатия и перекодировки видеофайлов.",
         link: "https://handbrake.fr/rotation.php?file=HandBrake-1.8.2-x86_64-Win_GUI.exe",
         label: "Скачать"
       },
       {
         name: "Plex Media Server",
-        icon: "icons/plex_media_server.png",
+        icon: "ico/plex_media_server.png",
         desc: "Персональный медиасервер: стримь свою коллекцию фильмов, музыки и фото на любые устройства.",
         link: "https://www.plex.tv/media-server-downloads/",
         label: "На сайт"
       },
       {
         name: "Яндекс Музыка",
-        icon: "icons/yandeks_muzyka.png",
+        icon: "ico/yandeks_muzyka.png",
         desc: "Десктопное приложение Яндекс Музыки с офлайн-режимом и синхронизацией плейлистов.",
         link: "https://music.yandex.ru/download/?autodownload=1",
         label: "Скачать"
       },
       {
         name: "SpotX",
-        icon: "icons/spotx.png",
+        icon: "ico/spotx.png",
         desc: "Патчер Spotify: блокирует рекламу, снимает ограничения бесплатного аккаунта.",
         link: "https://github.com/SpotX-Official/SpotX/releases",
         label: "На сайт"
@@ -469,161 +469,161 @@ const APPS_DATA = [
     apps: [
       {
         name: "7-Zip",
-        icon: "icons/7_zip.png",
+        icon: "ico/7_zip.png",
         desc: "Лучший архиватор с открытым кодом. Поддерживает все форматы архивов.",
         link: "https://7-zip.org/a/7z2408-x64.exe",
         label: "Скачать"
       },
       {
         name: "OBS Studio",
-        icon: "icons/obs_studio.png",
+        icon: "ico/obs_studio.png",
         desc: "Лучшая программа для стриминга и записи экрана. Бесплатно и без ограничений.",
         link: "https://obsproject.com/download",
         label: "На сайт"
       },
       {
         name: "qBittorrent",
-        icon: "icons/qbittorrent.png",
+        icon: "ico/qbittorrent.png",
         desc: "Популярный торрент-клиент без рекламы с открытым исходным кодом.",
         link: "https://www.qbittorrent.org/download",
         label: "На сайт"
       },
       {
         name: "ShareX",
-        icon: "icons/sharex.png",
+        icon: "ico/sharex.png",
         desc: "Мощный инструмент для скриншотов, записи экрана и загрузки файлов.",
         link: "https://github.com/ShareX/ShareX/releases/latest",
         label: "На сайт"
       },
       {
         name: "AnyDesk",
-        icon: "icons/anydesk.png",
+        icon: "ico/anydesk.png",
         desc: "Программа для удалённого управления рабочим столом с минимальной задержкой.",
         link: "https://anydesk.com/en/downloads/",
         label: "На сайт"
       },
       {
         name: "Notepad++",
-        icon: "icons/notepad.png",
+        icon: "ico/notepad.png",
         desc: "Мощный текстовый редактор с подсветкой синтаксиса для сотни языков программирования.",
         link: "https://notepad-plus-plus.org/downloads/",
         label: "На сайт"
       },
       {
         name: "Mem Reduct",
-        icon: "icons/mem_reduct.jpg",
+        icon: "ico/mem_reduct.jpg",
         desc: "Лёгкая утилита для мониторинга и очистки оперативной памяти в реальном времени.",
         link: "https://github.com/henrypp/memreduct/releases",
         label: "На сайт"
       },
       {
         name: "DroidCam",
-        icon: "icons/droidcam.png",
+        icon: "ico/droidcam.png",
         desc: "Превращает смартфон в веб-камеру или микрофон для ПК. Подключение по Wi-Fi или USB.",
         link: "https://droidcam.app/windows/#step1",
         label: "На сайт"
       },
       {
         name: "MakuTweaker",
-        icon: "icons/makutweaker.png",
+        icon: "ico/makutweaker.png",
         desc: "Твикер Windows от Adderly.Top для тонкой настройки системы и оптимизации производительности.",
         link: "https://adderly.top/makutweaker",
         label: "На сайт"
       },
       {
         name: "TwitchLink",
-        icon: "icons/twitchlink.png",
+        icon: "ico/twitchlink.png",
         desc: "Программа для скачивания стримов, клипов и VOD с Twitch. Поддерживает выбор качества и временных меток.",
         link: "https://github.com/devhotteok/TwitchLink/releases/download/3.2.0/TwitchLinkSetup-3.2.0.exe",
         label: "Скачать"
       },
       {
         name: "WizTree",
-        icon: "icons/wiztree.png",
+        icon: "ico/wiztree.png",
         desc: "Самый быстрый анализатор дискового пространства. Мгновенно показывает, какие файлы и папки занимают больше всего места.",
         link: "https://diskanalyzer.com/download",
         label: "На сайт"
       },
       {
         name: "Autoruns",
-        icon: "icons/autoruns.png",
+        icon: "ico/autoruns.png",
         desc: "Утилита от Microsoft (Sysinternals): полный контроль над автозагрузкой Windows — видит всё, что запускается при старте системы.",
         link: "https://download.sysinternals.com/files/Autoruns.zip",
         label: "Скачать"
       },
       {
         name: "UltraISO",
-        icon: "icons/ultraiso.jpg",
+        icon: "ico/ultraiso.jpg",
         desc: "Редактор и монтировщик ISO-образов. Создание, редактирование и запись образов дисков на флешку или CD/DVD.",
         link: "https://mega.nz/file/Qn0REb5S#D5Ga6rzlf-kNHRHKfWAZklVngXS0qIMywNAe8ljZ6G8",
         label: "Скачать"
       },
       {
         name: "OP AutoClicker",
-        icon: "icons/op_autoclicker.jpg",
+        icon: "ico/op_autoclicker.jpg",
         desc: "Простой автокликер мыши с настройкой интервала, количества кликов и горячих клавиш запуска.",
         link: "https://mega.nz/file/VjUBDLxK#y031_aXBYH81NQttSVn-m7Mvb-GHaLdHbS6UwkP1yPY",
         label: "Скачать"
       },
       {
         name: "uBlock Origin",
-        icon: "icons/ublock_origin.png",
+        icon: "ico/ublock_origin.png",
         desc: "Лучший блокировщик рекламы и трекеров для браузера. ⚠ Совместим только с Firefox и Opera.",
         link: "https://addons.mozilla.org/ru/firefox/addon/ublock-origin/",
         label: "На сайт"
       },
       {
         name: "Soundpad",
-        icon: "icons/soundpad.png",
+        icon: "ico/soundpad.png",
         desc: "Воспроизводи звуки через микрофон во время игры или звонка. Отличный саундборд для Discord и стримов.",
         link: "https://www.leppsoft.com/soundpad/en/download/",
         label: "На сайт"
       },
       {
         name: "AIDA64 Extreme",
-        icon: "icons/aida64_extreme.png",
+        icon: "ico/aida64_extreme.png",
         desc: "Профессиональная диагностика и стресс-тест системы: подробная информация о железе, датчики температур и нагрузок.",
         link: "https://download.aida64.com/aida64extreme820.exe",
         label: "Скачать"
       },
       {
         name: "Voicemod",
-        icon: "icons/voicemod.png",
+        icon: "ico/voicemod.png",
         desc: "Изменитель голоса в реальном времени с сотнями эффектов и саундбордом. Работает с Discord, Steam, Twitch и другими приложениями.",
         link: "https://flagship-versions.voicemod.net/1.6.6/VoicemodInstaller_1.6.6-j9antf.exe",
         label: "На сайт"
       },
       {
         name: "Windhawk",
-        icon: "icons/windhawk.jpg",
+        icon: "ico/windhawk.jpg",
         desc: "Маркетплейс модов для Windows: кастомизация Taskbar, Проводника, меню Пуск и других системных компонентов.",
         link: "https://ramensoftware.com/downloads/windhawk_setup.exe",
         label: "Скачать"
       },
       {
         name: "LibreOffice",
-        icon: "icons/libreoffice.png",
+        icon: "ico/libreoffice.png",
         desc: "Полноценная и бесплатная замена Microsoft Office. Поддерживает форматы .docx, .xlsx, .pptx. Включает Writer, Calc, Impress и Draw.",
         link: "https://www.libreoffice.org/download/download-libreoffice/",
         label: "На сайт"
       },
       {
         name: "Microsoft PowerToys",
-        icon: "icons/microsoft_powertoys.png",
+        icon: "ico/microsoft_powertoys.png",
         desc: "Официальный набор мастхэв-утилит от Microsoft: цветовая пипетка, FancyZones для управления окнами, массовое переименование файлов, быстрый просмотр и многое другое.",
         link: "https://github.com/microsoft/PowerToys/releases/latest",
         label: "На сайт"
       },
       {
         name: "Everything",
-        icon: "icons/everything.ico",
+        icon: "ico/everything.ico",
         desc: "Мгновенный поиск любых файлов и папок на ПК. Работает в сотни раз быстрее стандартного поиска Windows.",
         link: "https://www.voidtools.com/downloads/",
         label: "На сайт"
       },
       {
         name: "Microsoft Activation Scripts",
-        icon: "icons/microsoft_activation_scripts.png",
+        icon: "ico/microsoft_activation_scripts.png",
         desc: "MAS — популярный open-source инструмент для активации Windows и Office. Поддерживает HWID, Ohook, KMS38 и онлайн-активацию.",
         link: "https://mega.nz/file/lzMjzA4R#ccUUr2BnmtBwz9hDMeKl1dra1qPqUKdXAWQehMybI64",
         label: "Скачать",
@@ -631,7 +631,7 @@ const APPS_DATA = [
       },
       {
         name: "Revo Uninstaller",
-        icon: "icons/revo_uninstaller.png",
+        icon: "ico/revo_uninstaller.png",
         desc: "Глубокое удаление программ с автоматической чисткой остаточных файлов и записей в реестре. Portable-версия.",
         link: "https://mega.nz/file/16lRVZrB#PRbEPyWlLuAkbrrkSaA0jKbax0ZaY21R7sEuB4XfG2c",
         label: "Скачать"
@@ -644,14 +644,14 @@ const APPS_DATA = [
     apps: [
       {
         name: "Upscayl",
-        icon: "icons/upscayl.png",
+        icon: "ico/upscayl.png",
         desc: "ИИ-апскейлер изображений на нейросетях: увеличивает фото и арты в 2–4× без потери качества. Работает офлайн прямо на GPU.",
         link: "https://github.com/upscayl/upscayl/releases/latest",
         label: "На сайт"
       },
       {
         name: "DaVinci Resolve Studio 20",
-        icon: "icons/davinci_resolve_studio_20.png",
+        icon: "ico/davinci_resolve_studio_20.png",
         desc: "Профессиональный видеоредактор с цветокоррекцией, VFX и аудиомикшером. Studio-версия с расширенными возможностями.",
         link: "https://d.rutor.info/download/998844",
         label: "Скачать",
@@ -659,7 +659,7 @@ const APPS_DATA = [
       },
       {
         name: "FL Studio",
-        icon: "icons/fl_studio.png",
+        icon: "ico/fl_studio.png",
         desc: "Профессиональная DAW для создания музыки, битов и сведения треков. Пожизненные бесплатные обновления.",
         link: "https://mega.nz/file/Q3kBETwa#ZN_iJ4im2i61r-i-cKdlwTae14tBfetpHPbrxsRXTMs",
         label: "Скачать",
@@ -667,14 +667,14 @@ const APPS_DATA = [
       },
       {
         name: "Adobe Photoshop",
-        icon: "icons/adobe_photoshop.png",
+        icon: "ico/adobe_photoshop.png",
         desc: "Профессиональный редактор изображений. Ретушь, дизайн, работа со слоями и фильтрами.",
         link: "https://drive.google.com/file/d/1p0OKceLjJw8e_0VpDaTCXVJRaVY3PclY/view?usp=sharing",
         label: "Скачать"
       },
       {
         name: "Adobe Premiere Pro",
-        icon: "icons/adobe_premiere_pro.png",
+        icon: "ico/adobe_premiere_pro.png",
         desc: "Профессиональный видеоредактор от Adobe. Монтаж, цветокоррекция, многодорожечный звук и экспорт в любые форматы.",
         link: "https://d.rutor.info/download/1031838",
         label: "Скачать",
@@ -682,7 +682,7 @@ const APPS_DATA = [
       },
       {
         name: "Adobe Illustrator",
-        icon: "icons/adobe_illustrator.png",
+        icon: "ico/adobe_illustrator.png",
         desc: "Векторный графический редактор. Логотипы, иллюстрации, иконки — в любом масштабе без потери качества.",
         link: "https://d.rutor.info/download/1058974",
         label: "Скачать",
@@ -690,7 +690,7 @@ const APPS_DATA = [
       },
       {
         name: "Adobe Audition",
-        icon: "icons/adobe_audition.png",
+        icon: "ico/adobe_audition.png",
         desc: "Профессиональный аудиоредактор: запись, монтаж, реставрация звука и сведение многодорожечных проектов.",
         link: "https://d.rutor.info/download/1031839",
         label: "Скачать",
@@ -698,7 +698,7 @@ const APPS_DATA = [
       },
       {
         name: "Adobe After Effects",
-        icon: "icons/adobe_after_effects.png",
+        icon: "ico/adobe_after_effects.png",
         desc: "Визуальные эффекты, моушн-дизайн и анимация. Стандарт индустрии для VFX и motion graphics.",
         link: "https://d.rutor.info/download/1008630",
         label: "Скачать",
@@ -712,21 +712,21 @@ const APPS_DATA = [
     apps: [
       {
         name: "VS Code",
-        icon: "icons/vs_code.png",
+        icon: "ico/vs_code.png",
         desc: "Лёгкий и мощный редактор кода от Microsoft с огромной библиотекой расширений.",
         link: "https://code.visualstudio.com/",
         label: "На сайт"
       },
       {
         name: "Git",
-        icon: "icons/git.png",
+        icon: "ico/git.png",
         desc: "Система контроля версий. Необходима для работы с GitHub и любыми проектами.",
         link: "https://git-scm.com/download/win",
         label: "Скачать"
       },
       {
         name: "PyCharm",
-        icon: "icons/pycharm.png",
+        icon: "ico/pycharm.png",
         desc: "Профессиональная среда разработки для Python от JetBrains.",
         link: "https://www.jetbrains.com/pycharm/download/",
         label: "На сайт"
@@ -739,21 +739,21 @@ const APPS_DATA = [
     apps: [
       {
         name: "Java 8",
-        icon: "icons/java_8.png",
+        icon: "ico/java_8.png",
         desc: "Java 8 — лучшая версия для запуска Minecraft до версии 1.12 и старых программ.",
         link: "https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html",
         label: "На сайт"
       },
       {
         name: "Java 17",
-        icon: "icons/java_17.png",
+        icon: "ico/java_17.png",
         desc: "Java 17 — рекомендуемая версия для Minecraft 1.17–1.20 и современных Java-приложений.",
         link: "https://download.oracle.com/java/17/archive/jdk-17.0.11_windows-x64_bin.msi",
         label: "Скачать"
       },
       {
         name: "Java 21",
-        icon: "icons/java_21.png",
+        icon: "ico/java_21.png",
         desc: "Java 21 LTS — актуальная версия с долгосрочной поддержкой. Требуется для Minecraft 1.20.5+.",
         link: "https://download.oracle.com/java/21/archive/jdk-21.0.3_windows-x64_bin.msi",
         label: "Скачать"
@@ -766,35 +766,35 @@ const APPS_DATA = [
     apps: [
       {
         name: "Steam",
-        icon: "icons/steam.png",
+        icon: "ico/steam.png",
         desc: "Главная игровая платформа с тысячами игр, облачными сохранениями и магазином.",
         link: "https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe",
         label: "Скачать"
       },
       {
         name: "Epic Games",
-        icon: "icons/epic_games.png",
+        icon: "ico/epic_games.png",
         desc: "Лаунчер с регулярными бесплатными раздачами популярных игр.",
         link: "https://store.epicgames.com/download",
         label: "На сайт"
       },
       {
         name: "Riot Games",
-        icon: "icons/riot_games.png",
+        icon: "ico/riot_games.png",
         desc: "Лаунчер Riot для запуска League of Legends, Valorant, Teamfight Tactics и других игр студии.",
         link: "https://valorant.secure.dyn.riotcdn.net/channels/public/x/installer/current/live.live.eu.exe",
         label: "Скачать"
       },
       {
         name: "Prism Launcher",
-        icon: "icons/prism_launcher.png",
+        icon: "ico/prism_launcher.png",
         desc: "Продвинутый лаунчер Minecraft с поддержкой нескольких аккаунтов, модпаков и кастомных инстанций.",
         link: "https://github.com/PrismLauncher/PrismLauncher/releases/download/10.0.5/PrismLauncher-Windows-MSVC-Setup-10.0.5.exe",
         label: "Скачать"
       },
       {
         name: "UltiMC",
-        icon: "icons/ultimc.webp",
+        icon: "ico/ultimc.webp",
         desc: "Лаунчер Minecraft без авторизации Mojang — позволяет играть на пиратском аккаунте с поддержкой модпаков.",
         link: "https://github.com/UltimMC/Launcher?tab=readme-ov-file",
         label: "На сайт",
@@ -802,7 +802,7 @@ const APPS_DATA = [
       },
       {
         name: "Prism Launcher Cracked",
-        icon: "icons/prism_launcher_cracked.png",
+        icon: "ico/prism_launcher_cracked.png",
         desc: "Форк Prism Launcher с поддержкой пиратских аккаунтов Minecraft. Все функции оригинала + офлайн-режим.",
         link: "https://github.com/Diegiwg/PrismLauncher-Cracked/releases",
         label: "На сайт",
@@ -810,7 +810,7 @@ const APPS_DATA = [
       },
       {
         name: "Voidstrap",
-        icon: "icons/voidstrap.png",
+        icon: "ico/voidstrap.png",
         desc: "Альтернативный бутстраппер для Roblox с дополнительными настройками, быстрым запуском и обходом ограничений.",
         link: "https://github.com/midaskira/Voidstrap/releases/",
         label: "На сайт",
@@ -818,21 +818,21 @@ const APPS_DATA = [
       },
       {
         name: "Cristalix",
-        icon: "icons/cristalix.png",
+        icon: "ico/cristalix.png",
         desc: "Лаунчер игрового сервера Cristalix — популярная Minecraft-платформа с уникальными мини-играми и режимами.",
         link: "https://cristalix.gg/content/launcher/Cristalix.exe",
         label: "Скачать"
       },
       {
         name: "Lunar Client",
-        icon: "icons/lunar_client.png",
+        icon: "ico/lunar_client.png",
         desc: "Оптимизированный лаунчер Minecraft с буст FPS, встроенными модами (minimap, keystrokes, fps-counter) и поддержкой всех версий.",
         link: "https://www.lunarclient.com/download",
         label: "На сайт"
       },
       {
         name: "ExLoader",
-        icon: "icons/exloader.png",
+        icon: "ico/exloader.png",
         desc: "Единая библиотека игровых модификаций: читы, боты, нейросети и скины для CS2 и других игр — WH, триггер-бот, аим, скинченджер. Всё бесплатно.",
         link: "https://data.exloader.net/ExLoader_Installer.exe",
         label: "Скачать",
@@ -840,21 +840,21 @@ const APPS_DATA = [
       },
       {
         name: "Umbrella",
-        icon: "icons/umbrella.png",
+        icon: "ico/umbrella.png",
         desc: "Продвинутый игровой помощник для Dota 2 и Deadlock: доступ к 500+ скриптам — от анализа матчей до мап-хака, ESP и аимбота. Создай папку C:\\Umbrella и сохрани лаунчер туда.",
         link: "https://mega.nz/file/RyMAzJCZ#3RJ-pRk4EU_Vto9Ezaz3DSO1DqOTr8QQdEwv1-upK_s",
         label: "Скачать"
       },
       {
         name: "SAM (Ачивки Steam)",
-        icon: "icons/sam_achivki_steam.png",
+        icon: "ico/sam_achivki_steam.png",
         desc: "Утилита для управления достижениями в Steam: разблокировка и блокировка ачивок для любой игры в библиотеке.",
         link: "https://github.com/gibbed/SteamAchievementManager/releases",
         label: "На сайт"
       },
       {
         name: "Forza Horizon 5 (Online Fix)",
-        icon: "icons/forza_horizon_5.jpg",
+        icon: "ico/forza_horizon_5.jpg",
         desc: "Гоночный симулятор открытого мира в Мексике. Версия с онлайн-фиксом для мультиплеера.",
         link: "https://d.rutor.info/download/1073448",
         label: "Скачать",
@@ -862,14 +862,14 @@ const APPS_DATA = [
       },
       {
         name: "MCA Selector",
-        icon: "icons/mca_selector.png",
+        icon: "ico/mca_selector.png",
         desc: "Инструмент для редактирования мира Minecraft на уровне чанков: удаление, экспорт и фильтрация регионов карты.",
         link: "https://github.com/Querz/mcaselector/releases",
         label: "На сайт"
       },
       {
         name: "Cheat Engine",
-        icon: "icons/cheat_engine.png",
+        icon: "ico/cheat_engine.png",
         desc: "Мощный инструмент для редактирования памяти игр: поиск и изменение значений (здоровье, деньги, скорость) в однопользовательских играх.",
         link: "https://www.cheatengine.org/",
         label: "На сайт"
@@ -882,35 +882,35 @@ const APPS_DATA = [
     apps: [
       {
         name: "CPU-Z",
-        icon: "icons/cpu_z.jpg",
+        icon: "ico/cpu_z.jpg",
         desc: "Информация о процессоре, материнской плате, оперативной памяти и видеокарте.",
         link: "https://download.cpuid.com/cpu-z/cpu-z_2.10-en.exe",
         label: "Скачать"
       },
       {
         name: "GPU-Z",
-        icon: "icons/gpu_z.jpg",
+        icon: "ico/gpu_z.jpg",
         desc: "Детальная информация о видеокарте: частоты, температуры, объём памяти, пропускная способность и нагрузка в реальном времени.",
         link: "https://www.techpowerup.com/download/techpowerup-gpu-z/",
         label: "На сайт"
       },
       {
         name: "CrystalDiskInfo",
-        icon: "icons/crystaldiskinfo.jpg",
+        icon: "ico/crystaldiskinfo.jpg",
         desc: "Мониторинг здоровья жёстких дисков и SSD через показатели S.M.A.R.T.",
         link: "https://crystalmark.info/en/software/crystaldiskinfo/",
         label: "На сайт"
       },
       {
         name: "FurMark",
-        icon: "icons/furmark.jpg",
+        icon: "ico/furmark.jpg",
         desc: "Стресс-тест для видеокарты. Максимально нагружает GPU для проверки стабильности, температур и охлаждения.",
         link: "https://geeks3d.com/furmark/",
         label: "На сайт"
       },
       {
         name: "HWiNFO64",
-        icon: "icons/hwinfo64.png",
+        icon: "ico/hwinfo64.png",
         desc: "Самая подробная утилита для мониторинга всех датчиков системы: температуры, нагрузки, напряжений CPU, GPU, дисков в реальном времени.",
         link: "https://www.hwinfo.com/download/",
         label: "На сайт"
@@ -923,28 +923,28 @@ const APPS_DATA = [
     apps: [
       {
         name: "Outline VPN",
-        icon: "icons/outline_vpn.png",
+        icon: "ico/outline_vpn.png",
         desc: "Простой VPN от Jigsaw (Google). Идеально для обхода блокировок.",
         link: "https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe",
         label: "Скачать"
       },
       {
         name: "Amnezia VPN",
-        icon: "icons/amnezia_vpn.png",
+        icon: "ico/amnezia_vpn.png",
         desc: "Российский приватный VPN-клиент с открытым кодом на GitHub.",
         link: "https://github.com/amnezia-vpn/amnezia-client/releases/latest",
         label: "На сайт"
       },
       {
         name: "Radmin VPN",
-        icon: "icons/radmin_vpn.png",
+        icon: "ico/radmin_vpn.png",
         desc: "Бесплатный VPN для игры в локальную сеть: Minecraft, GTA и другие игры с друзьями по всему миру.",
         link: "https://download.radmin-vpn.com/download/files/Radmin_VPN_1.4.4642.1.exe",
         label: "Скачать"
       },
       {
         name: "Windscribe VPN",
-        icon: "icons/windscribe_vpn.png",
+        icon: "ico/windscribe_vpn.png",
         desc: "VPN с щедрым бесплатным тарифом 10 ГБ/месяц, встроенным блокировщиком рекламы и серверами в 60+ странах.",
         link: "https://windscribe.com/install/desktop/windows",
         label: "Скачать"
@@ -957,14 +957,14 @@ const APPS_DATA = [
     apps: [
       {
         name: "Malwarebytes",
-        icon: "icons/malwarebytes.png",
+        icon: "ico/malwarebytes.png",
         desc: "Мощный антивирус и антималварь с защитой в реальном времени. Находит угрозы, которые пропускают обычные антивирусы. ⚠ Для скачивания может потребоваться VPN.",
         link: "https://www.malwarebytes.com/mwb-download/thankyou",
         label: "Скачать"
       },
       {
         name: "Dr.Web CureIt",
-        icon: "icons/dr_web_cureit.png",
+        icon: "ico/dr_web_cureit.png",
         desc: "Бесплатный сканер вирусов с ежедневно обновляемыми базами. Не требует установки.",
         link: "https://free.drweb.ru/download+cureit/gr",
         label: "Скачать"
@@ -978,35 +978,35 @@ const APPS_DATA = [
 
       {
         name: "Flibustier64",
-        icon: "icons/flibustier64.png",
+        icon: "ico/flibustier64.png",
         desc: "Официальный фан-сайт сборок Windows от Флибустьера — коллекция всех официальных и пересмотренных версий Windows от автора для установки на ПК.",
         link: "https://flibustier64.com/",
         label: "На сайт"
       },
       {
         name: "Rufus",
-        icon: "icons/rufus.png",
+        icon: "ico/rufus.png",
         desc: "Самая популярная программа для создания загрузочных флешек с Windows. Быстрая и надёжная.",
         link: "https://github.com/pbatard/rufus/releases/download/v4.5/rufus-4.5p.exe",
         label: "Скачать"
       },
       {
         name: "WinPE Sergei Strelec 2026",
-        icon: "icons/winpe_sergei_strelec.png",
+        icon: "ico/winpe_sergei_strelec.png",
         desc: "Загрузочный диск на базе Windows 11/10 PE для обслуживания ПК: работа с дисками и разделами, резервное копирование, восстановление данных, диагностика и установка Windows.",
         link: "https://pixeldrain.com/u/Hrta5fbs",
         label: "Скачать"
       },
       {
         name: "Ventoy",
-        icon: "icons/ventoy.png",
+        icon: "ico/ventoy.png",
         desc: "Запись нескольких ISO-образов на одну флешку одновременно. Не нужно форматировать каждый раз.",
         link: "https://sourceforge.net/projects/ventoy/files/latest/download",
         label: "Скачать"
       },
       {
         name: "balenaEtcher",
-        icon: "icons/balenaetcher.png",
+        icon: "ico/balenaetcher.png",
         desc: "Простая и надёжная запись образов Linux и других ОС на флешки и SD-карты.",
         link: "https://github.com/balena-io/etcher/releases/download/v1.19.21/balenaEtcher-1.19.21.Setup.exe",
         label: "Скачать"
@@ -1019,14 +1019,14 @@ const APPS_DATA = [
     apps: [
       {
         name: "VirtualBox",
-        icon: "icons/virtualbox.png",
+        icon: "ico/virtualbox.png",
         desc: "Бесплатная виртуальная машина от Oracle. Запускай Linux, Windows и другие ОС внутри своей системы.",
         link: "https://download.virtualbox.org/virtualbox/7.0.20/VirtualBox-7.0.20-163906-Win.exe",
         label: "Скачать"
       },
       {
         name: "VMware Workstation",
-        icon: "icons/vmware_workstation.png",
+        icon: "ico/vmware_workstation.png",
         desc: "Профессиональная виртуальная машина с поддержкой снимков состояния, сети и высокой производительностью.",
         link: "https://mega.nz/file/licTgQQY#nHz94ziFh4gQg0K1cRS57Cn7zQ1LDIzWWpZ4mtaf35Y",
         label: "Скачать"
@@ -1039,14 +1039,14 @@ const APPS_DATA = [
     apps: [
       {
         name: "NVIDIA App",
-        icon: "icons/nvidia_app.png",
+        icon: "ico/nvidia_app.png",
         desc: "Новое приложение NVIDIA: управление драйверами, запись реплеев с GeForce Experience и оптимизация игр.",
         link: "https://www.nvidia.com/en-us/software/nvidia-app/",
         label: "На сайт"
       },
       {
         name: "AMD Software Adrenalin",
-        icon: "icons/amd_software_adrenalin.webp",
+        icon: "ico/amd_software_adrenalin.webp",
         desc: "Официальная панель управления видеокартами AMD с драйверами, Radeon ReLive и настройкой производительности.",
         link: "https://www.amd.com/en/support/download/drivers.html",
         label: "На сайт"
