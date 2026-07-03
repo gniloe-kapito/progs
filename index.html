@@ -1,0 +1,1032 @@
+<!doctype html>
+<html lang="ru" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0d0f14" />
+<title>AppHub — Быстрый доступ к программам</title>
+<meta name="description" content="Подборка проверенного софта. Загрузки в два клика! Все нужные программы в одном месте." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#0d0f14; --surface:#13161e; --card:#1a1e29; --border:#252a38;
+  --accent:#5b6eff; --accent2:#00d4aa; --text:#e8ecf5; --muted:#7a8099;
+  --radius:14px; --radius-lg:16px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; min-height:100vh; overflow-x:hidden;
+  background:var(--bg); color:var(--text);
+  font-family:'Manrope',system-ui,-apple-system,sans-serif;
+  background-image:radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--text) 6%, transparent) 1px, transparent 0);
+  background-size:22px 22px; background-position:-1px -1px;
+}
+h1,h2,h3,.font-heading{font-family:'Syne',system-ui,sans-serif}
+a{color:inherit}
+button{font-family:inherit;cursor:pointer}
+img{display:block;max-width:100%}
+.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+.no-scrollbar::-webkit-scrollbar{display:none}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:6px;border:2px solid var(--bg)}
+
+.app{min-height:100vh;display:flex;flex-direction:column}
+
+/* Skip link */
+.skip-link{position:absolute;left:-9999px;top:8px;z-index:300}
+.skip-link:focus{left:8px;background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;font-weight:700}
+
+/* Header */
+.header{
+  position:sticky; top:0; z-index:100;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(18px) saturate(140%); -webkit-backdrop-filter:blur(18px) saturate(140%);
+  border-bottom:1px solid var(--border);
+  border-top:1px solid color-mix(in srgb, var(--text) 6%, transparent);
+}
+.header-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:0 16px;height:60px}
+@media(min-width:640px){.header-inner{padding:0 24px;gap:16px}}
+@media(min-width:1024px){.header-inner{padding:0 40px}}
+.logo{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:-0.02em;text-decoration:none;flex-shrink:0}
+.logo .grad{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.search-wrap{margin-left:auto;max-width:28rem;position:relative}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted);pointer-events:none}
+.search-input{
+  width:100%; height:36px; padding:0 56px 0 36px;
+  border-radius:9999px; background:var(--surface); border:1px solid var(--border);
+  color:var(--text); font-size:0.875rem; outline:none;
+  transition:border-color .15s, box-shadow .15s;
+}
+.search-input::placeholder{color:var(--muted)}
+.search-input:focus{border-color:color-mix(in srgb, var(--accent) 60%, var(--border));box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent)}
+
+
+
+@media(min-width:640px){}
+.count-dot{width:6px;height:6px;border-radius:9999px;background:var(--accent2)}
+
+/* Hero */
+.hero{position:relative;padding:clamp(2rem,6vw,5rem) 1rem clamp(1.5rem,4vw,3rem);text-align:center;overflow:hidden}
+@media(min-width:640px){.hero{padding:32px 24px 24px}}
+@media(min-width:1024px){.hero{padding:32px 40px 24px}}
+.aurora{position:absolute;border-radius:9999px;filter:blur(70px);pointer-events:none;z-index:0;will-change:transform}
+.aurora-accent{background:radial-gradient(circle at center, rgba(91,110,255,0.55), transparent 65%);animation:aurora-a 18s ease-in-out alternate infinite}
+.aurora-accent2{background:radial-gradient(circle at center, rgba(0,212,170,0.45), transparent 65%);animation:aurora-b 22s ease-in-out alternate infinite}
+.aurora-violet{background:radial-gradient(circle at center, rgba(167,139,250,0.35), transparent 65%);animation:aurora-c 20s ease-in-out alternate infinite}
+@keyframes aurora-a{0%{transform:translate3d(-12%,-8%,0) scale(1)}100%{transform:translate3d(18%,10%,0) scale(1.15)}}
+@keyframes aurora-b{0%{transform:translate3d(15%,5%,0) scale(1.05)}100%{transform:translate3d(-10%,-12%,0) scale(.9)}}
+@keyframes aurora-c{0%{transform:translate3d(0%,12%,0) scale(.95)}100%{transform:translate3d(-8%,-6%,0) scale(1.1)}}
+.hero-inner{position:relative;z-index:1}
+.badge-pill{padding:0.28rem 0.9rem;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--surface);padding:4px 12px;border-radius:9999px;font-size:0.75rem;font-weight:600;color:color-mix(in srgb, var(--text) 85%, transparent);margin-bottom:16px}
+.hero h1{font-family:'Syne',sans-serif;font-weight:800;letter-spacing:-0.025em;line-height:1.12;font-size:1.7rem;margin:0}
+@media(min-width:640px){.hero h1{font-size:2.4rem}}
+@media(min-width:1024px){.hero h1{font-size:3.2rem}}
+.hero h1 .grad{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-style:normal}
+.hero p.subtitle{margin:12px auto 0;font-size:0.875rem;color:var(--muted);max-width:520px}
+
+/* Filter bar */
+.filter-bar{
+  position:sticky; top:60px; z-index:90;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(18px) saturate(140%); -webkit-backdrop-filter:blur(18px) saturate(140%);
+  border-bottom:1px solid var(--border);
+  border-top:1px solid color-mix(in srgb, var(--text) 6%, transparent);
+}
+.filter-inner{display:flex;align-items:center;gap:8px;max-width:1280px;margin:0 auto;padding:8px 16px}
+@media(min-width:640px){.filter-inner{padding:8px 24px}}
+@media(min-width:1024px){.filter-inner{padding:8px 40px}}
+.pills{flex:1;display:flex;cursor:grab;align-items:center;gap:6px;overflow-x:auto}
+.pill{
+  flex-shrink:0; display:inline-flex; align-items:center; gap:6px;
+  border:1px solid var(--border); background:var(--surface); color:var(--muted);
+  padding:6px 14px; border-radius:9999px; font-size:0.77rem; font-weight:600;
+  white-space:nowrap; transition:all .15s; cursor:pointer;
+}
+.pill:hover{border-color:var(--accent);color:var(--text)}
+.pill.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.pill.active.accent2{background:var(--accent2);border-color:var(--accent2);color:#fff}
+.pill .count{font-size:0.7rem;opacity:.7}
+.btn-icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:32px;height:32px;border-radius:8px;
+  border:1px solid var(--border);background:transparent;color:var(--muted);
+  cursor:pointer;transition:all .15s;
+}
+.btn-icon:hover{color:var(--text);border-color:color-mix(in srgb, var(--accent) 50%, var(--border))}
+.btn-settings{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid var(--border);background:var(--surface);color:color-mix(in srgb, var(--text) 85%, transparent);
+  padding:6px 12px;border-radius:8px;font-size:0.8rem;font-weight:500;cursor:pointer;transition:all .15s;
+}
+.btn-settings:hover{background:var(--card);color:var(--text)}
+.menu-text{display:none}
+@media(min-width:640px){.menu-text{display:inline}}
+
+/* Dropdown */
+.dropdown{position:relative}
+.dropdown-menu{
+  position:absolute;right:0;top:calc(100% + 6px);min-width:16rem;
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:6px;box-shadow:0 12px 40px rgba(0,0,0,0.4);z-index:95;
+  display:none;
+}
+.dropdown-menu.open{display:block}
+.dropdown-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);padding:6px 10px 4px}
+.dropdown-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font-size:0.85rem;cursor:pointer;color:var(--text)}
+.dropdown-item:hover{background:var(--card)}
+.dropdown-item .check{margin-left:auto;color:var(--accent);width:14px;height:14px}
+.dropdown-sep{height:1px;background:var(--border);margin:4px 0}
+.dropdown-item .badge-count{font-size:0.65rem;color:var(--muted);margin-left:auto}
+
+/* Main */
+main{max-width:1280px;width:100%;margin:0 auto;padding:20px 16px 64px;flex:1}
+@media(min-width:640px){main{padding:20px 24px 64px}}
+@media(min-width:1024px){main{padding:20px 40px 64px}}
+.search-meta{font-size:0.75rem;color:var(--muted);margin:0 0 16px}
+.search-meta .num{color:var(--text);font-weight:600}
+.section{margin-bottom:40px}
+.section-title{
+  font-family:'Syne',sans-serif;font-weight:700;font-size:0.875rem;text-transform:uppercase;letter-spacing:0.06em;
+  color:var(--muted);margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+}
+.section-title .bar{display:block;width:4px;height:16px;border-radius:2px;background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.section-title .count{margin-left:auto;font-size:0.7rem;font-weight:400;text-transform:none;letter-spacing:normal;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1280px){.grid{grid-template-columns:repeat(4,1fr)}}
+
+/* Card */
+.card{
+  position:relative; display:flex; flex-direction:column; gap:10px;
+  border:1px solid var(--border); background:var(--card); border-radius:14px; padding:16px;
+  cursor:pointer; overflow:hidden; transition:transform .15s, box-shadow .15s, border-color .15s;
+  opacity:0; transform:translateY(12px);
+}
+.card.in-view{opacity:1;transform:translateY(0);transition:opacity .35s ease-out, transform .35s ease-out, box-shadow .15s, border-color .15s}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.18);border-color:color-mix(in srgb, var(--accent) 50%, var(--border))}
+.card.installed{opacity:.7}
+.card .sheen{position:absolute;inset:0;border-radius:14px;opacity:0;pointer-events:none;transition:opacity .15s;background:linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, transparent) 0%, transparent 60%)}
+.card:hover .sheen{opacity:1}
+.card .accent-rail{position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:0 9999px 9999px 0;opacity:0;pointer-events:none;transition:opacity .15s;background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.card:hover .accent-rail{opacity:1}
+.fav-btn{
+  position:absolute;top:10px;right:10px;z-index:2;
+  width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;
+  border:none;border-radius:9999px;background:transparent;color:var(--muted);
+  cursor:pointer;transition:all .15s;
+}
+.fav-btn:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.fav-btn.active{color:var(--accent2);background:color-mix(in srgb, var(--accent2) 10%, transparent)}
+.card-head{display:flex;align-items:center;gap:12px;padding-right:28px}
+.card-icon{width:46px;height:46px;border-radius:10px;background:var(--surface);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
+.card-icon img{width:100%;height:100%;object-fit:contain}
+.card-icon .fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:1.2rem;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.card-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;line-height:1.25;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-cat{font-size:0.7rem;color:var(--muted);margin-top:2px}
+.installed-badge{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:9999px;background:color-mix(in srgb, var(--accent2) 15%, transparent);color:var(--accent2);border:1px solid color-mix(in srgb, var(--accent2) 40%, transparent);font-size:10px;font-weight:700}
+.card-desc{font-size:0.83rem;line-height:1.55;color:var(--muted);flex:1;word-break:break-word}
+.warn-badge{display:inline-flex;width:fit-content;align-items:center;gap:6px;border:1px solid color-mix(in srgb, #ffb347 35%, transparent);background:color-mix(in srgb, #ffb347 10%, transparent);padding:4px 10px;border-radius:6px;font-size:0.72rem;font-weight:700;color:#ffb347}
+.source-domain{font-size:0.66rem;text-transform:uppercase;letter-spacing:0.04em;color:color-mix(in srgb, var(--muted) 80%, transparent);display:inline-flex;align-items:center;gap:4px}
+.card-actions{display:flex;align-items:center;gap:8px;margin-top:4px}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid var(--border);background:transparent;color:var(--accent);
+  padding:8px 12px;border-radius:8px;font-size:0.8rem;font-weight:700;text-decoration:none;
+  transition:all .15s;
+}
+.btn-primary:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-ghost{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:8px;
+  border:1px solid var(--border);background:transparent;color:var(--muted);
+  cursor:pointer;transition:all .15s;
+}
+.btn-ghost:hover{color:var(--text);border-color:color-mix(in srgb, var(--accent) 50%, var(--border))}
+.btn-ghost.active{color:var(--accent2);border-color:color-mix(in srgb, var(--accent2) 50%, transparent);background:color-mix(in srgb, var(--accent2) 10%, transparent)}
+mark.apphub-mark{background:color-mix(in srgb, var(--accent) 35%, transparent);color:#fff;padding:0 2px;border-radius:3px}
+
+/* Recent strip */
+.recent-strip{margin-bottom:32px}
+.recent-track{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.recent-card{
+  flex-shrink:0; display:flex; align-items:center; gap:10px;
+  border:1px solid var(--border); background:var(--card); padding:10px 16px 10px 10px;
+  border-radius:12px; cursor:pointer; transition:all .15s;
+}
+.recent-card:hover{border-color:color-mix(in srgb, var(--accent) 50%, var(--border))}
+.recent-icon{width:32px;height:32px;border-radius:8px;background:var(--surface);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.recent-icon img{width:100%;height:100%;object-fit:contain}
+.recent-icon .fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:0.875rem;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.recent-name{font-size:0.75rem;font-weight:600;color:var(--text);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.recent-cat{font-size:0.65rem;color:var(--muted)}
+
+/* Empty state */
+.empty{text-align:center;padding:56px 16px;color:var(--muted)}
+.empty h3{font-family:'Syne',sans-serif;font-size:1.25rem;margin:0 0 8px;color:var(--text)}
+.empty p{margin:0 0 20px;font-size:0.875rem}
+.btn-reset{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:0.875rem;font-weight:600;cursor:pointer}
+.btn-reset:hover{background:color-mix(in srgb, var(--accent) 90%, #000)}
+
+/* Footer */
+.footer{
+  margin-top:auto;border-top:1px solid var(--border);text-align:center;
+  color:var(--muted);font-size:0.75rem;padding:24px 16px;
+  padding-bottom:max(2.5rem, env(safe-area-inset-bottom));
+}
+.footer p{margin:0 0 6px}
+.footer .small{font-size:0.7rem}
+
+/* Floating buttons */
+.fab-top{
+  position:fixed; bottom:20px; right:20px; z-index:80;
+  width:44px;height:44px;border-radius:9999px;border:none;
+  background:var(--accent);color:#fff;cursor:pointer;
+  display:none;align-items:center;justify-content:center;
+  box-shadow:0 8px 24px color-mix(in srgb, var(--accent) 30%, transparent);
+  transition:transform .15s, background .15s;
+}
+.fab-top.show{display:inline-flex}
+.fab-top:hover{transform:translateY(-2px);background:color-mix(in srgb, var(--accent) 90%, #000)}
+
+/* Modal */
+.modal-overlay{
+  position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.5);
+  display:none;align-items:center;justify-content:center;padding:16px;
+  animation:fade-in .2s ease-out;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  max-width:32rem;width:100%;max-height:calc(100vh - 32px);overflow-y:auto;
+  box-shadow:0 24px 64px rgba(0,0,0,0.5);
+  animation:zoom-in .2s ease-out;
+}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@keyframes zoom-in{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
+.modal-header{padding:20px 20px 16px;border-bottom:1px solid var(--border);position:relative}
+.modal-close{
+  position:absolute;top:16px;right:16px;
+  width:32px;height:32px;border-radius:8px;border:none;background:transparent;
+  color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+}
+.modal-close:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.modal-head-row{display:flex;align-items:flex-start;gap:16px;padding-right:32px}
+.modal-icon{width:64px;height:64px;border-radius:16px;background:var(--card);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.modal-icon img{width:100%;height:100%;object-fit:contain}
+.modal-icon .fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:1.5rem;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.modal-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1.25rem;line-height:1.2;margin:0}
+.modal-badges{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:9999px;font-size:0.7rem;font-weight:600;border:1px solid}
+.badge-cat{background:color-mix(in srgb, var(--accent) 15%, transparent);color:var(--accent);border-color:color-mix(in srgb, var(--accent) 30%, transparent)}
+.badge-src{background:transparent;color:var(--muted);border-color:var(--border)}
+.badge-inst{background:color-mix(in srgb, var(--accent2) 15%, transparent);color:var(--accent2);border-color:color-mix(in srgb, var(--accent2) 30%, transparent)}
+.modal-warn{margin-top:16px;display:flex;align-items:flex-start;gap:8px;border:1px solid color-mix(in srgb, #ffb347 40%, transparent);background:color-mix(in srgb, #ffb347 10%, transparent);padding:10px 12px;border-radius:8px;color:#ffb347}
+.modal-warn-title{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin:0 0 4px}
+.modal-warn-text{font-size:0.8rem;margin:0;line-height:1.4}
+.modal-body{padding:20px}
+.modal-desc{font-size:0.875rem;line-height:1.6;color:color-mix(in srgb, var(--text) 85%, transparent);margin:0}
+.modal-link-box{margin-top:12px;border:1px solid var(--border);background:var(--card);border-radius:8px;padding:12px}
+.modal-link-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted);margin:0}
+.modal-link-url{margin:4px 0 0;font-size:0.75rem;color:var(--accent);word-break:break-all;font-family:ui-monospace,monospace}
+.modal-actions{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.modal-btn-primary{display:inline-flex;flex:1;min-width:160px;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:#fff;padding:10px 16px;border-radius:8px;font-size:0.875rem;font-weight:700;text-decoration:none;transition:background .15s}
+.modal-btn-primary:hover{background:color-mix(in srgb, var(--accent) 90%, #000)}
+.modal-btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--border);background:transparent;color:var(--text);padding:10px 14px;border-radius:8px;font-size:0.875rem;font-weight:500;cursor:pointer;transition:border-color .15s}
+.modal-btn-ghost:hover{border-color:color-mix(in srgb, var(--accent) 50%, var(--border))}
+.modal-toggles{margin-top:16px;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--border);padding-top:16px}
+.modal-toggle-row{display:flex;align-items:center;gap:12px;font-size:0.875rem;cursor:pointer}
+.modal-toggle-row input{width:18px;height:18px;accent-color:var(--accent)}
+.modal-fav-btn{display:inline-flex;align-items:center;gap:12px;background:transparent;border:none;color:var(--text);padding:4px;font-size:0.875rem;cursor:pointer}
+.modal-fav-btn:hover{color:var(--accent2)}
+.modal-fav-btn.active{color:var(--accent2)}
+
+/* Keyboard help modal */
+.kb-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.kb-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--border);background:var(--card);border-radius:8px;padding:8px 12px}
+.kb-desc{font-size:0.875rem;color:color-mix(in srgb, var(--text) 85%, transparent)}
+.kb-keys{display:inline-flex;align-items:center;gap:4px}
+.kbd{display:inline-flex;min-width:24px;align-items:center;justify-content:center;border:1px solid var(--border);background:var(--bg);padding:2px 6px;border-radius:6px;font-family:ui-monospace,monospace;font-size:0.7rem;color:var(--text)}
+
+/* Toast */
+.toast-wrap{position:fixed;bottom:20px;right:20px;z-index:300;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:0.8rem;box-shadow:0 8px 24px rgba(0,0,0,0.4);animation:slide-in .25s ease-out;max-width:320px;pointer-events:auto}
+.toast .toast-desc{font-size:0.7rem;color:var(--muted);margin-top:2px}
+@keyframes slide-in{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+
+@media(prefers-reduced-motion:reduce){
+  .aurora,.card{animation:none!important;transition:none!important}
+  .card{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <a href="#main" class="skip-link">Перейти к содержимому</a>
+
+  <header class="header">
+    <div class="header-inner">
+      <a href="#" class="logo" id="logo-link" aria-label="AppHub — на главную">App<span class="grad">Hub</span></a>
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="text" placeholder="Поиск программ..." autocomplete="off" class="search-input" aria-label="Поиск программ" />
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;">
+      <div class="aurora aurora-accent" style="width:360px;height:360px;top:-80px;left:6%"></div>
+      <div class="aurora aurora-accent2" style="width:320px;height:320px;top:-20px;right:8%"></div>
+      <div class="aurora aurora-violet" style="width:280px;height:280px;bottom:-100px;left:38%"></div>
+    </div>
+    <div class="hero-inner">
+      <div class="badge-pill">🚀 Быстрый доступ</div>
+      <h1>Все нужные<br style="display:none" class="br-sm" /> программы <span class="grad">в одном месте</span></h1>
+      <p class="subtitle">Подборка проверенного софта. Загрузки в два клика!</p>
+    </div>
+  </section>
+
+  <div class="filter-bar">
+    <div class="filter-inner">
+      <div class="pills no-scrollbar" id="pills" role="group" aria-label="Категории программ"></div>
+  </div>
+
+  <main id="main">
+    <p id="search-meta" class="search-meta" style="display:none"></p>
+    <div id="recent-mount"></div>
+    <section id="favorites-section" class="section" style="display:none">
+      <h2 class="section-title"><span class="bar"></span>⭐ Избранное</h2>
+      <div class="grid" id="favorites-grid"></div>
+    </section>
+    <div id="empty-state" class="empty" style="display:none">
+      <h3>Ничего не найдено</h3>
+      <p>Попробуй другой запрос или сбрось фильтры.</p>
+      <button type="button" class="btn-reset" id="reset-btn">Сбросить фильтры</button>
+    </div>
+    <div id="categories-mount"></div>
+  </main>
+
+  <footer class="footer">
+    <p>Все программы загружаются из официальных источников · AppHub</p>
+    <p class="small">Всего программ в каталоге: <span id="footer-total">0</span> · <span id="footer-cats">0</span> категорий</p>
+  </footer>
+
+  <button type="button" class="fab-top" id="fab-top" aria-label="Наверх">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+  </button>
+</div>
+
+<!-- App detail modal -->
+<div class="modal-overlay" id="app-modal" role="dialog" aria-modal="true">
+  <div class="modal" id="app-modal-inner"></div>
+</div>
+
+<!-- Keyboard help modal -->
+
+<div class="toast-wrap" id="toast-wrap" aria-live="polite"></div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// AppHub static build — runtime
+// ─────────────────────────────────────────────────────────────────────────────
+const APPS_DATA = [{"id":"browsers","name":"Браузеры","apps":[{"name":"Google Chrome","icon":"https://gniloe-kapito.github.io/progs/ico/google_chrome.png","desc":"Самый популярный браузер с богатой экосистемой расширений и быстрой работой.","link":"https://www.google.com/chrome/","label":"На сайт"},{"name":"Mozilla Firefox","icon":"https://gniloe-kapito.github.io/progs/ico/mozilla_firefox.png","desc":"Быстрый и приватный браузер с открытым исходным кодом на движке Gecko.","link":"https://download.mozilla.org/?product=firefox-stub&os=win&lang=ru","label":"Скачать"},{"name":"Brave","icon":"https://gniloe-kapito.github.io/progs/ico/brave.png","desc":"Приватный браузер со встроенным блокировщиком рекламы и трекеров.","link":"https://laptop-updates.brave.com/download/BRV010?bitness=64","label":"Скачать"},{"name":"Яндекс Браузер","icon":"https://gniloe-kapito.github.io/progs/ico/yandeks_brauzer.png","desc":"Быстрый браузер на Chromium с встроенным переводчиком, защитой от слежки и голосовым ассистентом Алисой.","link":"https://browser.yandex.ru/","label":"На сайт"}]},{"id":"messengers","name":"Мессенджеры","apps":[{"name":"Telegram","icon":"https://gniloe-kapito.github.io/progs/ico/telegram.png","desc":"Самый популярный мессенджер с облачным хранением и мощными ботами.","link":"https://telegram.org/dl/desktop/win64","label":"Скачать"},{"name":"Мессенджер MAX","icon":"https://gniloe-kapito.github.io/progs/ico/messendzher_max.png","desc":"Мессенджер от VK с голосовыми и видеозвонками, каналами, ботами и интеграцией с экосистемой Mail.ru. Ловит даже на парковки","link":"https://download.max.ru/#desktop","label":"На сайт"},{"name":"AyuGram","icon":"https://gniloe-kapito.github.io/progs/ico/ayugram.png","desc":"Форк Telegram Desktop с расширенными функциями: история удалённых сообщений, антиудаление и кастомизация интерфейса.","link":"https://github.com/AyuGram/AyuGramDesktop","label":"На сайт"},{"name":"Discord","icon":"https://gniloe-kapito.github.io/progs/ico/discord.png","desc":"Голосовые и текстовые чаты для геймеров и сообществ.","link":"https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x64","label":"Скачать"},{"name":"Vencord","icon":"https://gniloe-kapito.github.io/progs/ico/vencord.png","desc":"Мод-инсталлятор для Discord: бесплатные фичи Nitro, огромная библиотека плагинов и тем оформления.","link":"https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.exe","label":"Скачать"},{"name":"Rave","icon":"https://gniloe-kapito.github.io/progs/ico/rave.png","desc":"Приложение для совместного просмотра фильмов и стримов с друзьями в реальном времени.","link":"https://getraveapp.com/windows","label":"Скачать"}]},{"id":"media","name":"Медиа и плееры","apps":[{"name":"VLC","icon":"https://gniloe-kapito.github.io/progs/ico/vlc.png","desc":"Легендарный медиаплеер с поддержкой всех форматов и потокового видео.","link":"https://get.videolan.org/vlc/3.0.21/win64/vlc-3.0.21-win64.exe","label":"Скачать"},{"name":"MPC-HC","icon":"https://gniloe-kapito.github.io/progs/ico/mpc_hc.png","desc":"Лёгкий и быстрый видеоплеер с поддержкой огромного числа кодеков. Активно поддерживаемый форк оригинального MPC.","link":"https://github.com/clsid2/mpc-hc/releases/","label":"На сайт"},{"name":"Audacity","icon":"https://gniloe-kapito.github.io/progs/ico/audacity.png","desc":"Бесплатный редактор звука с мультидорожечной записью и множеством эффектов.","link":"https://www.audacityteam.org/download/","label":"На сайт"},{"name":"HandBrake","icon":"https://gniloe-kapito.github.io/progs/ico/handbrake.png","desc":"Конвертер видео с гибкой настройкой кодеков. Идеален для сжатия и перекодировки видеофайлов.","link":"https://handbrake.fr/rotation.php?file=HandBrake-1.8.2-x86_64-Win_GUI.exe","label":"Скачать"},{"name":"Plex Media Server","icon":"https://gniloe-kapito.github.io/progs/ico/plex_media_server.png","desc":"Персональный медиасервер: стримь свою коллекцию фильмов, музыки и фото на любые устройства.","link":"https://www.plex.tv/media-server-downloads/","label":"На сайт"},{"name":"Яндекс Музыка","icon":"https://gniloe-kapito.github.io/progs/ico/yandeks_muzyka.png","desc":"Десктопное приложение Яндекс Музыки с офлайн-режимом и синхронизацией плейлистов.","link":"https://music.yandex.ru/download/?autodownload=1","label":"Скачать"},{"name":"SpotX","icon":"https://gniloe-kapito.github.io/progs/ico/spotx.png","desc":"Патчер Spotify: блокирует рекламу, снимает ограничения бесплатного аккаунта.","link":"https://github.com/SpotX-Official/SpotX/releases","label":"На сайт"},{"name":"Dotify","icon":"https://gniloe-kapito.github.io/progs/ico/dotify.png","desc":"Бесплатный музыкальный плеер с поддержкой YouTube Music, Spotify, Яндекс Музыки и SoundCloud в одном интерфейсе. Без подписок и ограничений.","link":"https://dotify.fun/","label":"На сайт"}]},{"id":"utils","name":"Утилиты","apps":[{"name":"7-Zip","icon":"https://gniloe-kapito.github.io/progs/ico/7_zip.png","desc":"Лучший архиватор с открытым кодом. Поддерживает все форматы архивов.","link":"https://7-zip.org/a/7z2408-x64.exe","label":"Скачать"},{"name":"OBS Studio","icon":"https://gniloe-kapito.github.io/progs/ico/obs_studio.png","desc":"Лучшая программа для стриминга и записи экрана. Бесплатно и без ограничений.","link":"https://obsproject.com/download","label":"На сайт"},{"name":"qBittorrent","icon":"https://gniloe-kapito.github.io/progs/ico/qbittorrent.png","desc":"Популярный торрент-клиент без рекламы с открытым исходным кодом.","link":"https://www.qbittorrent.org/download","label":"На сайт"},{"name":"ShareX","icon":"https://gniloe-kapito.github.io/progs/ico/sharex.png","desc":"Мощный инструмент для скриншотов, записи экрана и загрузки файлов.","link":"https://github.com/ShareX/ShareX/releases/latest","label":"На сайт"},{"name":"AnyDesk","icon":"https://gniloe-kapito.github.io/progs/ico/anydesk.png","desc":"Программа для удалённого управления рабочим столом с минимальной задержкой.","link":"https://anydesk.com/en/downloads/","label":"На сайт"},{"name":"Notepad++","icon":"https://gniloe-kapito.github.io/progs/ico/notepad.png","desc":"Мощный текстовый редактор с подсветкой синтаксиса для сотни языков программирования.","link":"https://notepad-plus-plus.org/downloads/","label":"На сайт"},{"name":"Mem Reduct","icon":"https://gniloe-kapito.github.io/progs/ico/mem_reduct.jpg","desc":"Лёгкая утилита для мониторинга и очистки оперативной памяти в реальном времени.","link":"https://github.com/henrypp/memreduct/releases","label":"На сайт"},{"name":"DroidCam","icon":"https://gniloe-kapito.github.io/progs/ico/droidcam.png","desc":"Превращает смартфон в веб-камеру или микрофон для ПК. Подключение по Wi-Fi или USB.","link":"https://droidcam.app/windows/#step1","label":"На сайт"},{"name":"MakuTweaker","icon":"https://gniloe-kapito.github.io/progs/ico/makutweaker.png","desc":"Твикер Windows от Adderly.Top для тонкой настройки системы и оптимизации производительности.","link":"https://adderly.top/makutweaker","label":"На сайт"},{"name":"TwitchLink","icon":"https://gniloe-kapito.github.io/progs/ico/twitchlink.png","desc":"Программа для скачивания стримов, клипов и VOD с Twitch. Поддерживает выбор качества и временных меток.","link":"https://github.com/devhotteok/TwitchLink/releases/download/3.2.0/TwitchLinkSetup-3.2.0.exe","label":"Скачать"},{"name":"ytDownloader","icon":"https://gniloe-kapito.github.io/progs/ico/ytdownloader.png","desc":"Кроссплатформенный загрузчик видео и аудио с YouTube, TikTok, Twitter, Instagram и сотен других сайтов на движке yt-dlp. Открытый код, без рекламы и трекеров, есть встроенный компрессор видео.","link":"https://github.com/aandrew-me/ytDownloader/releases/latest/download/YTDownloader_Win.exe","label":"Скачать"},{"name":"YouTube Downloader (Adderly)","icon":"https://gniloe-kapito.github.io/progs/ico/youtube_downloader_adderly.png","desc":"Загрузчик видео с YouTube от Adderly.Top на основе yt-dlp с приятным GUI и предпросмотром ролика перед скачиванием. Требуется .NET Core 8.0.","link":"https://www.mediafire.com/file/kyytpr48x3ltrcg/YouTubeDownloader.Setup.exe/file","label":"Скачать"},{"name":"WizTree","icon":"https://gniloe-kapito.github.io/progs/ico/wiztree.png","desc":"Самый быстрый анализатор дискового пространства. Мгновенно показывает, какие файлы и папки занимают больше всего места.","link":"https://diskanalyzer.com/download","label":"На сайт"},{"name":"Autoruns","icon":"https://gniloe-kapito.github.io/progs/ico/autoruns.png","desc":"Утилита от Microsoft (Sysinternals): полный контроль над автозагрузкой Windows — видит всё, что запускается при старте системы.","link":"https://download.sysinternals.com/files/Autoruns.zip","label":"Скачать"},{"name":"UltraISO","icon":"https://gniloe-kapito.github.io/progs/ico/ultraiso.jpg","desc":"Редактор и монтировщик ISO-образов. Создание, редактирование и запись образов дисков на флешку или CD/DVD.","link":"https://mega.nz/file/Qn0REb5S#D5Ga6rzlf-kNHRHKfWAZklVngXS0qIMywNAe8ljZ6G8","label":"Скачать"},{"name":"OP AutoClicker","icon":"https://gniloe-kapito.github.io/progs/ico/op_autoclicker.jpg","desc":"Простой автокликер мыши с настройкой интервала, количества кликов и горячих клавиш запуска.","link":"https://mega.nz/file/VjUBDLxK#y031_aXBYH81NQttSVn-m7Mvb-GHaLdHbS6UwkP1yPY","label":"Скачать"},{"name":"uBlock Origin","icon":"https://gniloe-kapito.github.io/progs/ico/ublock_origin.png","desc":"Лучший блокировщик рекламы и трекеров для браузера. ⚠️️ Совместим только с Firefox и Opera.","link":"https://addons.mozilla.org/ru/firefox/addon/ublock-origin/","label":"На сайт"},{"name":"Soundpad","icon":"https://gniloe-kapito.github.io/progs/ico/soundpad.png","desc":"Воспроизводи звуки через микрофон во время игры или звонка. Отличный саундборд для Discord и стримов.","link":"https://www.leppsoft.com/soundpad/en/download/","label":"На сайт"},{"name":"AIDA64 Extreme","icon":"https://gniloe-kapito.github.io/progs/ico/aida64_extreme.png","desc":"Профессиональная диагностика и стресс-тест системы: подробная информация о железе, датчики температур и нагрузок.","link":"https://download.aida64.com/aida64extreme820.exe","label":"Скачать"},{"name":"Voicemod","icon":"https://gniloe-kapito.github.io/progs/ico/voicemod.png","desc":"Изменитель голоса в реальном времени с сотнями эффектов и саундбордом. Работает с Discord, Steam, Twitch и другими приложениями.","link":"https://flagship-versions.voicemod.net/1.6.6/VoicemodInstaller_1.6.6-j9antf.exe","label":"На сайт"},{"name":"Windhawk","icon":"https://gniloe-kapito.github.io/progs/ico/windhawk.jpg","desc":"Маркетплейс модов для Windows: кастомизация Taskbar, Проводника, меню Пуск и других системных компонентов.","link":"https://ramensoftware.com/downloads/windhawk_setup.exe","label":"Скачать"},{"name":"LibreOffice","icon":"https://gniloe-kapito.github.io/progs/ico/libreoffice.png","desc":"Полноценная и бесплатная замена Microsoft Office. Поддерживает форматы .docx, .xlsx, .pptx. Включает Writer, Calc, Impress и Draw.","link":"https://www.libreoffice.org/download/download-libreoffice/","label":"На сайт"},{"name":"Microsoft PowerToys","icon":"https://gniloe-kapito.github.io/progs/ico/microsoft_powertoys.png","desc":"Официальный набор мастхэв-утилит от Microsoft: цветовая пипетка, FancyZones для управления окнами, массовое переименование файлов, быстрый просмотр и многое другое.","link":"https://github.com/microsoft/PowerToys/releases/latest","label":"На сайт"},{"name":"Everything","icon":"https://gniloe-kapito.github.io/progs/ico/everything.ico","desc":"Мгновенный поиск любых файлов и папок на ПК. Работает в сотни раз быстрее стандартного поиска Windows.","link":"https://www.voidtools.com/downloads/","label":"На сайт"},{"name":"Microsoft Activation Scripts","icon":"https://gniloe-kapito.github.io/progs/ico/microsoft_activation_scripts.png","desc":"MAS — популярный open-source инструмент для активации Windows и Office. Поддерживает HWID, Ohook, KMS38 и онлайн-активацию.","link":"https://mega.nz/file/lzMjzA4R#ccUUr2BnmtBwz9hDMeKl1dra1qPqUKdXAWQehMybI64","label":"Скачать"},{"name":"Revo Uninstaller","icon":"https://gniloe-kapito.github.io/progs/ico/revo_uninstaller.png","desc":"Глубокое удаление программ с автоматической чисткой остаточных файлов и записей в реестре. Portable-версия.","link":"https://mega.nz/file/16lRVZrB#PRbEPyWlLuAkbrrkSaA0jKbax0ZaY21R7sEuB4XfG2c","label":"Скачать"},{"name":"Recuva","icon":"https://gniloe-kapito.github.io/progs/ico/recuva.png","desc":"Программа для восстановления удалённых файлов: фотографии, документы, видео с жёстких дисков, флешек и карт памяти. Поддерживает глубокое сканирование.","link":"https://recuva.su/download","label":"На сайт"},{"name":"Reg Organizer","icon":"https://gniloe-kapito.github.io/progs/ico/reg_organizer.png","desc":"Мощный инструмент для чистки и оптимизации реестра Windows: удаление мусорных записей, просмотр и редактирование реестра, история изменений и откат.","link":"https://apps.microsoft.com/detail/xp891whfxmjxk2","label":"На сайт"},{"name":"Microsoft Office 2022","icon":"https://gniloe-kapito.github.io/progs/ico/microsoft_office.png","desc":"Пакет офисных приложений: Word, Excel, PowerPoint, Outlook и другие. ⚠️️ При установке выбери нужные приложения из списка и обязательно сними галочку с рекламы.","link":"https://mega.nz/file/t38AVCyT#C88Vypdj7tKmjv6BUlm_tXSCPtxa1J4ISuSKZY1FIbA","label":"Скачать"},{"name":"Резалка 512×512","icon":"https://gniloe-kapito.github.io/progs/ico/pythonlogo.png","desc":"Python-скрипт для нарезки изображений под размер стикеров Telegram (512×512). Минималистичный инструмент без лишнего — закинул фото, получил готовые стикеры.","link":"https://github.com/gniloe-kapito/rezalka-512x512","label":"На сайт"},{"name":"HDR to SDR","icon":"https://gniloe-kapito.github.io/progs/ico/pythonlogo.png","desc":"Python-конвертер HDR-видео в SDR. Пригодится при монтаже или публикации на платформах без поддержки HDR. Работа может быть нестабильной.","link":"https://github.com/gniloe-kapito/HDR_TO_SDR","label":"На сайт","warn":"Нестабильная работа"}]},{"id":"creative","name":"Творчество","apps":[{"name":"Upscayl","icon":"https://gniloe-kapito.github.io/progs/ico/upscayl.png","desc":"ИИ-апскейлер изображений на нейросетях: увеличивает фото и арты в 2–4× без потери качества. Работает офлайн прямо на GPU.","link":"https://github.com/upscayl/upscayl/releases/latest","label":"На сайт"},{"name":"digiKam","icon":"https://gniloe-kapito.github.io/progs/ico/digikam.png","desc":"Профессиональный менеджер фотографий с открытым кодом: организация по тегам, геолокации и дате, встроенный RAW-редактор, пакетная обработка и экспорт.","link":"https://www.digikam.org/download/","label":"На сайт"},{"name":"CapCut","icon":"https://gniloe-kapito.github.io/progs/ico/capcut.png","desc":"Популярный видеоредактор от ByteDance с простым монтажом, субтитрами, эффектами и ИИ-инструментами. Идеален для коротких роликов, Reels и TikTok.","link":"https://www.capcut.com/download-guidance","label":"На сайт"},{"name":"DaVinci Resolve Studio 20","icon":"https://gniloe-kapito.github.io/progs/ico/davinci_resolve_studio_20.png","desc":"Профессиональный видеоредактор с цветокоррекцией, VFX и аудиомикшером. Studio-версия с расширенными возможностями.","link":"https://d.rutor.info/download/998844","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск"},{"name":"FL Studio","icon":"https://gniloe-kapito.github.io/progs/ico/fl_studio.png","desc":"Профессиональная DAW для создания музыки, битов и сведения треков. Пожизненные бесплатные обновления.","link":"https://mega.nz/file/Q3kBETwa#ZN_iJ4im2i61r-i-cKdlwTae14tBfetpHPbrxsRXTMs","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск"},{"name":"Adobe Photoshop","icon":"https://gniloe-kapito.github.io/progs/ico/adobe_photoshop.png","desc":"Профессиональный редактор изображений. Ретушь, дизайн, работа со слоями и фильтрами.","link":"https://drive.google.com/file/d/1p0OKceLjJw8e_0VpDaTCXVJRaVY3PclY/view?usp=sharing","label":"Скачать"},{"name":"Adobe Premiere Pro","icon":"https://gniloe-kapito.github.io/progs/ico/adobe_premiere_pro.png","desc":"Профессиональный видеоредактор от Adobe. Монтаж, цветокоррекция, многодорожечный звук и экспорт в любые форматы.","link":"https://d.rutor.info/download/1031838","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск"},{"name":"Adobe Illustrator","icon":"https://gniloe-kapito.github.io/progs/ico/adobe_illustrator.png","desc":"Векторный графический редактор. Логотипы, иллюстрации, иконки — в любом масштабе без потери качества.","link":"https://d.rutor.info/download/1058974","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск"},{"name":"Adobe Audition","icon":"https://gniloe-kapito.github.io/progs/ico/adobe_audition.png","desc":"Профессиональный аудиоредактор: запись, монтаж, реставрация звука и сведение многодорожечных проектов.","link":"https://d.rutor.info/download/1031839","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск"},{"name":"Adobe After Effects","icon":"https://gniloe-kapito.github.io/progs/ico/adobe_after_effects.png","desc":"Визуальные эффекты, моушн-дизайн и анимация. Стандарт индустрии для VFX и motion graphics.","link":"https://d.rutor.info/download/1008630","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск"},{"name":"Мемный пак для монтажа","icon":"https://gniloe-kapito.github.io/progs/ico/meme_pack.png","desc":"Пак мемных звуков, переходов и прочего добра для монтажа: всё самое нужное в одном архиве.","link":"https://drive.google.com/file/d/1CcQFk_sFpnMaZJxzJGlMBjHR0KDXRWLP/view","label":"Скачать"}]},{"id":"dev","name":"Для разработчиков","apps":[{"name":"VS Code","icon":"https://gniloe-kapito.github.io/progs/ico/vs_code.png","desc":"Лёгкий и мощный редактор кода от Microsoft с огромной библиотекой расширений.","link":"https://code.visualstudio.com/","label":"На сайт"},{"name":"VS Studio","icon":"https://gniloe-kapito.github.io/progs/ico/vs_studio.png","desc":"Самая полная IDE для разработчиков .NET и C++ в Windows для создания веб-, облачных, настольных и мобильных приложений, сервисов и игр.","link":"https://visualstudio.microsoft.com/ru/downloads/","label":"На сайт"},{"name":"Git","icon":"https://gniloe-kapito.github.io/progs/ico/git.png","desc":"Система контроля версий. Необходима для работы с GitHub и любыми проектами.","link":"https://git-scm.com/download/win","label":"Скачать"},{"name":"PyCharm","icon":"https://gniloe-kapito.github.io/progs/ico/pycharm.png","desc":"Профессиональная среда разработки для Python от JetBrains.","link":"https://www.jetbrains.com/pycharm/download/","label":"На сайт"},{"name":"Node.js v25","icon":"https://gniloe-kapito.github.io/progs/ico/nodejs.png","desc":"JavaScript-среда выполнения на движке V8 для серверной разработки, скриптов и инструментов сборки. Версия 25.8.1 — актуальная.","link":"https://nodejs.org/dist/v25.8.1/node-v25.8.1-win-x64.zip","label":"Скачать"},{"name":"AutoHotkey v2","icon":"https://gniloe-kapito.github.io/progs/ico/autohotkey.png","desc":"Бесплатный язык скриптов для автоматизации Windows: горячие клавиши, макросы, переназначение кнопок и создание собственных утилит. Версия 2 — актуальная и рекомендуемая к использованию.","link":"https://www.autohotkey.com/download/ahk-v2.exe","label":"Скачать"}]},{"id":"libs","name":"Библиотеки и среды","apps":[{"name":"Java 8","icon":"https://gniloe-kapito.github.io/progs/ico/java_8.png","desc":"Java 8 — лучшая версия для запуска Minecraft до версии 1.12 и старых программ.","link":"https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html","label":"На сайт"},{"name":"Java 17","icon":"https://gniloe-kapito.github.io/progs/ico/java_17.png","desc":"Java 17 — рекомендуемая версия для Minecraft 1.17–1.20 и современных Java-приложений.","link":"https://download.oracle.com/java/17/archive/jdk-17.0.11_windows-x64_bin.msi","label":"Скачать"},{"name":"Java 21","icon":"https://gniloe-kapito.github.io/progs/ico/java_21.png","desc":"Java 21 LTS — актуальная версия с долгосрочной поддержкой. Требуется для Minecraft 1.20.5+.","link":"https://download.oracle.com/java/21/archive/jdk-21.0.3_windows-x64_bin.msi","label":"Скачать"}]},{"id":"games","name":"Игры и лаунчеры","apps":[{"name":"Steam","icon":"https://gniloe-kapito.github.io/progs/ico/steam.png","desc":"Главная игровая платформа с тысячами игр, облачными сохранениями и магазином.","link":"https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe","label":"Скачать"},{"name":"Epic Games","icon":"https://gniloe-kapito.github.io/progs/ico/epic_games.png","desc":"Лаунчер с регулярными бесплатными раздачами популярных игр.","link":"https://store.epicgames.com/download","label":"На сайт"},{"name":"Riot Games","icon":"https://gniloe-kapito.github.io/progs/ico/riot_games.png","desc":"Лаунчер Riot для запуска League of Legends, Valorant, Teamfight Tactics и других игр студии.","link":"https://valorant.secure.dyn.riotcdn.net/channels/public/x/installer/current/live.live.eu.exe","label":"Скачать"},{"name":"Prism Launcher","icon":"https://gniloe-kapito.github.io/progs/ico/prism_launcher.png","desc":"Продвинутый лаунчер Minecraft с поддержкой нескольких аккаунтов, модпаков и кастомных инстанций.","link":"https://github.com/PrismLauncher/PrismLauncher/releases/download/10.0.5/PrismLauncher-Windows-MSVC-Setup-10.0.5.exe","label":"Скачать"},{"name":"UltiMC","icon":"https://gniloe-kapito.github.io/progs/ico/ultimc.webp","desc":"Лаунчер Minecraft без авторизации Mojang — позволяет играть на пиратском аккаунте с поддержкой модпаков.","link":"https://github.com/UltimMC/Launcher?tab=readme-ov-file","label":"На сайт","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск"},{"name":"Prism Launcher Cracked","icon":"https://gniloe-kapito.github.io/progs/ico/prism_launcher_cracked.png","desc":"Форк Prism Launcher с поддержкой пиратских аккаунтов Minecraft. Все функции оригинала + офлайн-режим.","link":"https://github.com/Diegiwg/PrismLauncher-Cracked/releases","label":"На сайт","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск"},{"name":"Voidstrap","icon":"https://gniloe-kapito.github.io/progs/ico/voidstrap.png","desc":"Альтернативный бутстраппер для Roblox с дополнительными настройками, быстрым запуском и обходом ограничений.","link":"https://github.com/midaskira/Voidstrap/releases/","label":"На сайт","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск"},{"name":"Cristalix","icon":"https://gniloe-kapito.github.io/progs/ico/cristalix.png","desc":"Лаунчер игрового сервера Cristalix — популярная Minecraft-платформа с уникальными мини-играми и режимами.","link":"https://cristalix.gg/content/launcher/Cristalix.exe","label":"Скачать"},{"name":"Majestic RP","icon":"https://gniloe-kapito.github.io/progs/ico/majestic_rp.png","desc":"Официальный лаунчер крупнейшего GTA 5 RolePlay-проекта Majestic — свыше 100 000 игроков ежедневно. Требуется лицензионная копия GTA V Legacy.","link":"https://cdn.majestic-files.net/launcher/cis/MajesticLauncherSetup.exe","label":"Скачать"},{"name":"GTA5RP","icon":"https://gniloe-kapito.github.io/progs/ico/gta5rp.png","desc":"Лаунчер популярного ролевого сервера GTA5RP на движке RAGE MP — десятки тысяч игроков онлайн. Требуется лицензионная копия GTA V.","link":"https://gta5rp.com/download","label":"На сайт"},{"name":"Lunar Client","icon":"https://gniloe-kapito.github.io/progs/ico/lunar_client.png","desc":"Оптимизированный лаунчер Minecraft с буст FPS, встроенными модами (minimap, keystrokes, fps-counter) и поддержкой всех версий.","link":"https://www.lunarclient.com/download","label":"На сайт"},{"name":"ExLoader","icon":"https://gniloe-kapito.github.io/progs/ico/exloader.png","desc":"Единая библиотека игровых модификаций: читы, боты, нейросети и скины для CS2 и других игр — WH, триггер-бот, аим, скинченджер. Всё бесплатно.","link":"https://data.exloader.net/ExLoader_Installer.exe","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск"},{"name":"Umbrella","icon":"https://gniloe-kapito.github.io/progs/ico/umbrella.png","desc":"Продвинутый игровой помощник для Dota 2 и Deadlock: доступ к 500+ скриптам — от анализа матчей до мап-хака, ESP и аимбота. Создай папку C:\\Umbrella и сохрани лаунчер туда.","link":"https://mega.nz/file/RyMAzJCZ#3RJ-pRk4EU_Vto9Ezaz3DSO1DqOTr8QQdEwv1-upK_s","label":"Скачать"},{"name":"SAM (Ачивки Steam)","icon":"https://gniloe-kapito.github.io/progs/ico/sam_achivki_steam.png","desc":"Утилита для управления достижениями в Steam: разблокировка и блокировка ачивок для любой игры в библиотеке.","link":"https://github.com/gibbed/SteamAchievementManager/releases","label":"На сайт"},{"name":"Forza Horizon 5 (Online Fix)","icon":"https://gniloe-kapito.github.io/progs/ico/forza_horizon_5.jpg","desc":"Гоночный симулятор открытого мира в Мексике. Версия с онлайн-фиксом для мультиплеера.","link":"https://d.rutor.info/download/1073448","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск"},{"name":"MCA Selector","icon":"https://gniloe-kapito.github.io/progs/ico/mca_selector1.ico","desc":"Инструмент для редактирования мира Minecraft на уровне чанков: удаление, экспорт и фильтрация регионов карты.","link":"https://github.com/Querz/mcaselector/releases","label":"На сайт"},{"name":"Cheat Engine","icon":"https://gniloe-kapito.github.io/progs/ico/cheat_engine.png","desc":"Мощный инструмент для редактирования памяти игр: поиск и изменение значений (здоровье, деньги, скорость) в однопользовательских играх.","link":"https://www.cheatengine.org/","label":"На сайт"},{"name":"FPS Monitor","icon":"https://gniloe-kapito.github.io/progs/ico/fps_monitor.png","desc":"Игровой оверлей для мониторинга производительности в реальном времени: FPS, температуры CPU и GPU, загрузка, тактовые частоты и задержки прямо поверх игры.","link":"https://fpsmon.com/bin/fpsmon.exe","label":"Скачать"}]},{"id":"diagnostics","name":"Диагностика","apps":[{"name":"CPU-Z","icon":"https://gniloe-kapito.github.io/progs/ico/cpu_z.jpg","desc":"Информация о процессоре, материнской плате, оперативной памяти и видеокарте.","link":"https://download.cpuid.com/cpu-z/cpu-z_2.10-en.exe","label":"Скачать"},{"name":"GPU-Z","icon":"https://gniloe-kapito.github.io/progs/ico/gpu_z.jpg","desc":"Детальная информация о видеокарте: частоты, температуры, объём памяти, пропускная способность и нагрузка в реальном времени.","link":"https://www.techpowerup.com/download/techpowerup-gpu-z/","label":"На сайт"},{"name":"CrystalDiskMark","icon":"https://gniloe-kapito.github.io/progs/ico/crystaldiskmark.png","desc":"Тест скорости жёсткого диска или SSD: последовательное и случайное чтение/запись. Быстро показывает реальную производительность накопителя.","link":"https://crystalmark.info/redirect.php?product=CrystalDiskMarkAoi","label":"Скачать"},{"name":"CrystalDiskInfo","icon":"https://gniloe-kapito.github.io/progs/ico/crystaldiskinfo.jpg","desc":"Мониторинг здоровья жёстких дисков и SSD через показатели S.M.A.R.T.","link":"https://crystalmark.info/en/software/crystaldiskinfo/","label":"На сайт"},{"name":"FurMark","icon":"https://gniloe-kapito.github.io/progs/ico/furmark.jpg","desc":"Стресс-тест для видеокарты. Максимально нагружает GPU для проверки стабильности, температур и охлаждения.","link":"https://geeks3d.com/furmark/","label":"На сайт"},{"name":"HWiNFO64","icon":"https://gniloe-kapito.github.io/progs/ico/hwinfo64.png","desc":"Самая подробная утилита для мониторинга всех датчиков системы: температуры, нагрузки, напряжений CPU, GPU, дисков в реальном времени.","link":"https://www.hwinfo.com/download/","label":"На сайт"}]},{"id":"vpn","name":"VPN","apps":[{"name":"Outline VPN","icon":"https://gniloe-kapito.github.io/progs/ico/outline_vpn.png","desc":"Простой VPN от Jigsaw (Google). Идеально для обхода блокировок.","link":"https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe","label":"Скачать"},{"name":"Amnezia VPN","icon":"https://gniloe-kapito.github.io/progs/ico/amnezia_vpn.png","desc":"Российский приватный VPN-клиент с открытым кодом на GitHub.","link":"https://github.com/amnezia-vpn/amnezia-client/releases/latest","label":"На сайт"},{"name":"Radmin VPN","icon":"https://gniloe-kapito.github.io/progs/ico/radmin_vpn.png","desc":"Бесплатный VPN для игры в локальную сеть: Minecraft, GTA и другие игры с друзьями по всему миру.","link":"https://download.radmin-vpn.com/download/files/Radmin_VPN_1.4.4642.1.exe","label":"Скачать"},{"name":"Windscribe VPN","icon":"https://gniloe-kapito.github.io/progs/ico/windscribe_vpn.png","desc":"VPN с щедрым бесплатным тарифом 10 ГБ/месяц, встроенным блокировщиком рекламы и серверами в 60+ странах.","link":"https://windscribe.com/install/desktop/windows","label":"Скачать"},{"name":"Planet VPN","icon":"https://gniloe-kapito.github.io/progs/ico/planet_vpn.png","desc":"Бесплатный VPN с серверами в 60+ странах и без ограничений по трафику на бесплатном тарифе. Уступает Windscribe по стабильности соединения, скорости и функциональности — Windscribe остаётся более надёжным выбором.","link":"https://planet-vpn-free.ru/thanks/","label":"На сайт"},{"name":"Пак для обхода блокировок","icon":"https://play-lh.googleusercontent.com/AQLJ_xKB1RKWtz-Tgrck1coak3wIQIkQgt5bJddb1Srt-bkSSxQlgKT6m3HGYGzrpzc","desc":"Готовый пак конфигураций и инструментов для обхода белых и чёрных списков блокировок. Всё необходимое в одном архиве.","link":"https://drive.google.com/file/d/1iyDdzusCSa6AKAyabT_ZPN-lmDnfPlC0/view?usp=sharing","label":"Скачать"}]},{"id":"security","name":"Безопасность","apps":[{"name":"Malwarebytes","icon":"https://gniloe-kapito.github.io/progs/ico/malwarebytes.png","desc":"Мощный антивирус и антималварь с защитой в реальном времени. Находит угрозы, которые пропускают обычные антивирусы. ⚠️️ Для скачивания может потребоваться VPN.","link":"https://www.malwarebytes.com/mwb-download/thankyou","label":"Скачать"},{"name":"Dr.Web CureIt","icon":"https://gniloe-kapito.github.io/progs/ico/dr_web_cureit.png","desc":"Бесплатный сканер вирусов с ежедневно обновляемыми базами. Не требует установки.","link":"https://free.drweb.ru/download+cureit/gr","label":"Скачать"}]},{"id":"flash","name":"Работа с флешками","apps":[{"name":"Flibustier64","icon":"https://gniloe-kapito.github.io/progs/ico/flibustier64.png","desc":"Официальный фан-сайт сборок Windows от Флибустьера — коллекция всех официальных и пересмотренных версий Windows от автора для установки на ПК.","link":"https://flibustier64.com/","label":"На сайт"},{"name":"Rufus","icon":"https://gniloe-kapito.github.io/progs/ico/rufus.png","desc":"Самая популярная программа для создания загрузочных флешек с Windows. Быстрая и надёжная.","link":"https://github.com/pbatard/rufus/releases/download/v4.5/rufus-4.5p.exe","label":"Скачать"},{"name":"WinPE Sergei Strelec 2026","icon":"https://gniloe-kapito.github.io/progs/ico/winpe_sergei_strelec.png","desc":"Загрузочный диск на базе Windows 11/10 PE для обслуживания ПК: работа с дисками и разделами, резервное копирование, восстановление данных, диагностика и установка Windows.","link":"https://pixeldrain.com/u/Hrta5fbs","label":"Скачать"},{"name":"Ventoy","icon":"https://gniloe-kapito.github.io/progs/ico/ventoy.png","desc":"Запись нескольких ISO-образов на одну флешку одновременно. Не нужно форматировать каждый раз.","link":"https://sourceforge.net/projects/ventoy/files/latest/download","label":"Скачать"},{"name":"balenaEtcher","icon":"https://gniloe-kapito.github.io/progs/ico/balenaetcher.png","desc":"Простая и надёжная запись образов Linux и других ОС на флешки и SD-карты.","link":"https://github.com/balena-io/etcher/releases/download/v1.19.21/balenaEtcher-1.19.21.Setup.exe","label":"Скачать"}]},{"id":"vm","name":"Виртуальные машины","apps":[{"name":"VirtualBox","icon":"https://gniloe-kapito.github.io/progs/ico/virtualbox.png","desc":"Бесплатная виртуальная машина от Oracle. Запускай Linux, Windows и другие ОС внутри своей системы.","link":"https://download.virtualbox.org/virtualbox/7.0.20/VirtualBox-7.0.20-163906-Win.exe","label":"Скачать"},{"name":"VMware Workstation","icon":"https://gniloe-kapito.github.io/progs/ico/vmware_workstation.png","desc":"Профессиональная виртуальная машина с поддержкой снимков состояния, сети и высокой производительностью.","link":"https://mega.nz/file/licTgQQY#nHz94ziFh4gQg0K1cRS57Cn7zQ1LDIzWWpZ4mtaf35Y","label":"Скачать"}]},{"id":"drivers","name":"Драйверы","apps":[{"name":"NVIDIA App","icon":"https://gniloe-kapito.github.io/progs/ico/nvidia_app.png","desc":"Новое приложение NVIDIA: управление драйверами, запись реплеев с GeForce Experience и оптимизация игр.","link":"https://www.nvidia.com/en-us/software/nvidia-app/","label":"На сайт"},{"name":"AMD Software Adrenalin","icon":"https://gniloe-kapito.github.io/progs/ico/amd_software_adrenalin.webp","desc":"Официальная панель управления видеокартами AMD с драйверами, Radeon ReLive и настройкой производительности.","link":"https://www.amd.com/en/support/download/drivers.html","label":"На сайт"}]}];
+const FLAT = [{"id":"browsers:0","name":"Google Chrome","icon":"https://gniloe-kapito.github.io/progs/ico/google_chrome.png","desc":"Самый популярный браузер с богатой экосистемой расширений и быстрой работой.","link":"https://www.google.com/chrome/","label":"На сайт","warn":null,"category":"browsers","categoryName":"Браузеры"},{"id":"browsers:1","name":"Mozilla Firefox","icon":"https://gniloe-kapito.github.io/progs/ico/mozilla_firefox.png","desc":"Быстрый и приватный браузер с открытым исходным кодом на движке Gecko.","link":"https://download.mozilla.org/?product=firefox-stub&os=win&lang=ru","label":"Скачать","warn":null,"category":"browsers","categoryName":"Браузеры"},{"id":"browsers:2","name":"Brave","icon":"https://gniloe-kapito.github.io/progs/ico/brave.png","desc":"Приватный браузер со встроенным блокировщиком рекламы и трекеров.","link":"https://laptop-updates.brave.com/download/BRV010?bitness=64","label":"Скачать","warn":null,"category":"browsers","categoryName":"Браузеры"},{"id":"browsers:3","name":"Яндекс Браузер","icon":"https://gniloe-kapito.github.io/progs/ico/yandeks_brauzer.png","desc":"Быстрый браузер на Chromium с встроенным переводчиком, защитой от слежки и голосовым ассистентом Алисой.","link":"https://browser.yandex.ru/","label":"На сайт","warn":null,"category":"browsers","categoryName":"Браузеры"},{"id":"messengers:0","name":"Telegram","icon":"https://gniloe-kapito.github.io/progs/ico/telegram.png","desc":"Самый популярный мессенджер с облачным хранением и мощными ботами.","link":"https://telegram.org/dl/desktop/win64","label":"Скачать","warn":null,"category":"messengers","categoryName":"Мессенджеры"},{"id":"messengers:1","name":"Мессенджер MAX","icon":"https://gniloe-kapito.github.io/progs/ico/messendzher_max.png","desc":"Мессенджер от VK с голосовыми и видеозвонками, каналами, ботами и интеграцией с экосистемой Mail.ru. Ловит даже на парковки","link":"https://download.max.ru/#desktop","label":"На сайт","warn":null,"category":"messengers","categoryName":"Мессенджеры"},{"id":"messengers:2","name":"AyuGram","icon":"https://gniloe-kapito.github.io/progs/ico/ayugram.png","desc":"Форк Telegram Desktop с расширенными функциями: история удалённых сообщений, антиудаление и кастомизация интерфейса.","link":"https://github.com/AyuGram/AyuGramDesktop","label":"На сайт","warn":null,"category":"messengers","categoryName":"Мессенджеры"},{"id":"messengers:3","name":"Discord","icon":"https://gniloe-kapito.github.io/progs/ico/discord.png","desc":"Голосовые и текстовые чаты для геймеров и сообществ.","link":"https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x64","label":"Скачать","warn":null,"category":"messengers","categoryName":"Мессенджеры"},{"id":"messengers:4","name":"Vencord","icon":"https://gniloe-kapito.github.io/progs/ico/vencord.png","desc":"Мод-инсталлятор для Discord: бесплатные фичи Nitro, огромная библиотека плагинов и тем оформления.","link":"https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.exe","label":"Скачать","warn":null,"category":"messengers","categoryName":"Мессенджеры"},{"id":"messengers:5","name":"Rave","icon":"https://gniloe-kapito.github.io/progs/ico/rave.png","desc":"Приложение для совместного просмотра фильмов и стримов с друзьями в реальном времени.","link":"https://getraveapp.com/windows","label":"Скачать","warn":null,"category":"messengers","categoryName":"Мессенджеры"},{"id":"media:0","name":"VLC","icon":"https://gniloe-kapito.github.io/progs/ico/vlc.png","desc":"Легендарный медиаплеер с поддержкой всех форматов и потокового видео.","link":"https://get.videolan.org/vlc/3.0.21/win64/vlc-3.0.21-win64.exe","label":"Скачать","warn":null,"category":"media","categoryName":"Медиа и плееры"},{"id":"media:1","name":"MPC-HC","icon":"https://gniloe-kapito.github.io/progs/ico/mpc_hc.png","desc":"Лёгкий и быстрый видеоплеер с поддержкой огромного числа кодеков. Активно поддерживаемый форк оригинального MPC.","link":"https://github.com/clsid2/mpc-hc/releases/","label":"На сайт","warn":null,"category":"media","categoryName":"Медиа и плееры"},{"id":"media:2","name":"Audacity","icon":"https://gniloe-kapito.github.io/progs/ico/audacity.png","desc":"Бесплатный редактор звука с мультидорожечной записью и множеством эффектов.","link":"https://www.audacityteam.org/download/","label":"На сайт","warn":null,"category":"media","categoryName":"Медиа и плееры"},{"id":"media:3","name":"HandBrake","icon":"https://gniloe-kapito.github.io/progs/ico/handbrake.png","desc":"Конвертер видео с гибкой настройкой кодеков. Идеален для сжатия и перекодировки видеофайлов.","link":"https://handbrake.fr/rotation.php?file=HandBrake-1.8.2-x86_64-Win_GUI.exe","label":"Скачать","warn":null,"category":"media","categoryName":"Медиа и плееры"},{"id":"media:4","name":"Plex Media Server","icon":"https://gniloe-kapito.github.io/progs/ico/plex_media_server.png","desc":"Персональный медиасервер: стримь свою коллекцию фильмов, музыки и фото на любые устройства.","link":"https://www.plex.tv/media-server-downloads/","label":"На сайт","warn":null,"category":"media","categoryName":"Медиа и плееры"},{"id":"media:5","name":"Яндекс Музыка","icon":"https://gniloe-kapito.github.io/progs/ico/yandeks_muzyka.png","desc":"Десктопное приложение Яндекс Музыки с офлайн-режимом и синхронизацией плейлистов.","link":"https://music.yandex.ru/download/?autodownload=1","label":"Скачать","warn":null,"category":"media","categoryName":"Медиа и плееры"},{"id":"media:6","name":"SpotX","icon":"https://gniloe-kapito.github.io/progs/ico/spotx.png","desc":"Патчер Spotify: блокирует рекламу, снимает ограничения бесплатного аккаунта.","link":"https://github.com/SpotX-Official/SpotX/releases","label":"На сайт","warn":null,"category":"media","categoryName":"Медиа и плееры"},{"id":"media:7","name":"Dotify","icon":"https://gniloe-kapito.github.io/progs/ico/dotify.png","desc":"Бесплатный музыкальный плеер с поддержкой YouTube Music, Spotify, Яндекс Музыки и SoundCloud в одном интерфейсе. Без подписок и ограничений.","link":"https://dotify.fun/","label":"На сайт","warn":null,"category":"media","categoryName":"Медиа и плееры"},{"id":"utils:0","name":"7-Zip","icon":"https://gniloe-kapito.github.io/progs/ico/7_zip.png","desc":"Лучший архиватор с открытым кодом. Поддерживает все форматы архивов.","link":"https://7-zip.org/a/7z2408-x64.exe","label":"Скачать","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:1","name":"OBS Studio","icon":"https://gniloe-kapito.github.io/progs/ico/obs_studio.png","desc":"Лучшая программа для стриминга и записи экрана. Бесплатно и без ограничений.","link":"https://obsproject.com/download","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:2","name":"qBittorrent","icon":"https://gniloe-kapito.github.io/progs/ico/qbittorrent.png","desc":"Популярный торрент-клиент без рекламы с открытым исходным кодом.","link":"https://www.qbittorrent.org/download","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:3","name":"ShareX","icon":"https://gniloe-kapito.github.io/progs/ico/sharex.png","desc":"Мощный инструмент для скриншотов, записи экрана и загрузки файлов.","link":"https://github.com/ShareX/ShareX/releases/latest","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:4","name":"AnyDesk","icon":"https://gniloe-kapito.github.io/progs/ico/anydesk.png","desc":"Программа для удалённого управления рабочим столом с минимальной задержкой.","link":"https://anydesk.com/en/downloads/","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:5","name":"Notepad++","icon":"https://gniloe-kapito.github.io/progs/ico/notepad.png","desc":"Мощный текстовый редактор с подсветкой синтаксиса для сотни языков программирования.","link":"https://notepad-plus-plus.org/downloads/","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:6","name":"Mem Reduct","icon":"https://gniloe-kapito.github.io/progs/ico/mem_reduct.jpg","desc":"Лёгкая утилита для мониторинга и очистки оперативной памяти в реальном времени.","link":"https://github.com/henrypp/memreduct/releases","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:7","name":"DroidCam","icon":"https://gniloe-kapito.github.io/progs/ico/droidcam.png","desc":"Превращает смартфон в веб-камеру или микрофон для ПК. Подключение по Wi-Fi или USB.","link":"https://droidcam.app/windows/#step1","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:8","name":"MakuTweaker","icon":"https://gniloe-kapito.github.io/progs/ico/makutweaker.png","desc":"Твикер Windows от Adderly.Top для тонкой настройки системы и оптимизации производительности.","link":"https://adderly.top/makutweaker","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:9","name":"TwitchLink","icon":"https://gniloe-kapito.github.io/progs/ico/twitchlink.png","desc":"Программа для скачивания стримов, клипов и VOD с Twitch. Поддерживает выбор качества и временных меток.","link":"https://github.com/devhotteok/TwitchLink/releases/download/3.2.0/TwitchLinkSetup-3.2.0.exe","label":"Скачать","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:10","name":"ytDownloader","icon":"https://gniloe-kapito.github.io/progs/ico/ytdownloader.png","desc":"Кроссплатформенный загрузчик видео и аудио с YouTube, TikTok, Twitter, Instagram и сотен других сайтов на движке yt-dlp. Открытый код, без рекламы и трекеров, есть встроенный компрессор видео.","link":"https://github.com/aandrew-me/ytDownloader/releases/latest/download/YTDownloader_Win.exe","label":"Скачать","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:11","name":"YouTube Downloader (Adderly)","icon":"https://gniloe-kapito.github.io/progs/ico/youtube_downloader_adderly.png","desc":"Загрузчик видео с YouTube от Adderly.Top на основе yt-dlp с приятным GUI и предпросмотром ролика перед скачиванием. Требуется .NET Core 8.0.","link":"https://www.mediafire.com/file/kyytpr48x3ltrcg/YouTubeDownloader.Setup.exe/file","label":"Скачать","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:12","name":"WizTree","icon":"https://gniloe-kapito.github.io/progs/ico/wiztree.png","desc":"Самый быстрый анализатор дискового пространства. Мгновенно показывает, какие файлы и папки занимают больше всего места.","link":"https://diskanalyzer.com/download","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:13","name":"Autoruns","icon":"https://gniloe-kapito.github.io/progs/ico/autoruns.png","desc":"Утилита от Microsoft (Sysinternals): полный контроль над автозагрузкой Windows — видит всё, что запускается при старте системы.","link":"https://download.sysinternals.com/files/Autoruns.zip","label":"Скачать","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:14","name":"UltraISO","icon":"https://gniloe-kapito.github.io/progs/ico/ultraiso.jpg","desc":"Редактор и монтировщик ISO-образов. Создание, редактирование и запись образов дисков на флешку или CD/DVD.","link":"https://mega.nz/file/Qn0REb5S#D5Ga6rzlf-kNHRHKfWAZklVngXS0qIMywNAe8ljZ6G8","label":"Скачать","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:15","name":"OP AutoClicker","icon":"https://gniloe-kapito.github.io/progs/ico/op_autoclicker.jpg","desc":"Простой автокликер мыши с настройкой интервала, количества кликов и горячих клавиш запуска.","link":"https://mega.nz/file/VjUBDLxK#y031_aXBYH81NQttSVn-m7Mvb-GHaLdHbS6UwkP1yPY","label":"Скачать","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:16","name":"uBlock Origin","icon":"https://gniloe-kapito.github.io/progs/ico/ublock_origin.png","desc":"Лучший блокировщик рекламы и трекеров для браузера. ⚠️️ Совместим только с Firefox и Opera.","link":"https://addons.mozilla.org/ru/firefox/addon/ublock-origin/","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:17","name":"Soundpad","icon":"https://gniloe-kapito.github.io/progs/ico/soundpad.png","desc":"Воспроизводи звуки через микрофон во время игры или звонка. Отличный саундборд для Discord и стримов.","link":"https://www.leppsoft.com/soundpad/en/download/","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:18","name":"AIDA64 Extreme","icon":"https://gniloe-kapito.github.io/progs/ico/aida64_extreme.png","desc":"Профессиональная диагностика и стресс-тест системы: подробная информация о железе, датчики температур и нагрузок.","link":"https://download.aida64.com/aida64extreme820.exe","label":"Скачать","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:19","name":"Voicemod","icon":"https://gniloe-kapito.github.io/progs/ico/voicemod.png","desc":"Изменитель голоса в реальном времени с сотнями эффектов и саундбордом. Работает с Discord, Steam, Twitch и другими приложениями.","link":"https://flagship-versions.voicemod.net/1.6.6/VoicemodInstaller_1.6.6-j9antf.exe","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:20","name":"Windhawk","icon":"https://gniloe-kapito.github.io/progs/ico/windhawk.jpg","desc":"Маркетплейс модов для Windows: кастомизация Taskbar, Проводника, меню Пуск и других системных компонентов.","link":"https://ramensoftware.com/downloads/windhawk_setup.exe","label":"Скачать","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:21","name":"LibreOffice","icon":"https://gniloe-kapito.github.io/progs/ico/libreoffice.png","desc":"Полноценная и бесплатная замена Microsoft Office. Поддерживает форматы .docx, .xlsx, .pptx. Включает Writer, Calc, Impress и Draw.","link":"https://www.libreoffice.org/download/download-libreoffice/","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:22","name":"Microsoft PowerToys","icon":"https://gniloe-kapito.github.io/progs/ico/microsoft_powertoys.png","desc":"Официальный набор мастхэв-утилит от Microsoft: цветовая пипетка, FancyZones для управления окнами, массовое переименование файлов, быстрый просмотр и многое другое.","link":"https://github.com/microsoft/PowerToys/releases/latest","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:23","name":"Everything","icon":"https://gniloe-kapito.github.io/progs/ico/everything.ico","desc":"Мгновенный поиск любых файлов и папок на ПК. Работает в сотни раз быстрее стандартного поиска Windows.","link":"https://www.voidtools.com/downloads/","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:24","name":"Microsoft Activation Scripts","icon":"https://gniloe-kapito.github.io/progs/ico/microsoft_activation_scripts.png","desc":"MAS — популярный open-source инструмент для активации Windows и Office. Поддерживает HWID, Ohook, KMS38 и онлайн-активацию.","link":"https://mega.nz/file/lzMjzA4R#ccUUr2BnmtBwz9hDMeKl1dra1qPqUKdXAWQehMybI64","label":"Скачать","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:25","name":"Revo Uninstaller","icon":"https://gniloe-kapito.github.io/progs/ico/revo_uninstaller.png","desc":"Глубокое удаление программ с автоматической чисткой остаточных файлов и записей в реестре. Portable-версия.","link":"https://mega.nz/file/16lRVZrB#PRbEPyWlLuAkbrrkSaA0jKbax0ZaY21R7sEuB4XfG2c","label":"Скачать","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:26","name":"Recuva","icon":"https://gniloe-kapito.github.io/progs/ico/recuva.png","desc":"Программа для восстановления удалённых файлов: фотографии, документы, видео с жёстких дисков, флешек и карт памяти. Поддерживает глубокое сканирование.","link":"https://recuva.su/download","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:27","name":"Reg Organizer","icon":"https://gniloe-kapito.github.io/progs/ico/reg_organizer.png","desc":"Мощный инструмент для чистки и оптимизации реестра Windows: удаление мусорных записей, просмотр и редактирование реестра, история изменений и откат.","link":"https://apps.microsoft.com/detail/xp891whfxmjxk2","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:28","name":"Microsoft Office 2022","icon":"https://gniloe-kapito.github.io/progs/ico/microsoft_office.png","desc":"Пакет офисных приложений: Word, Excel, PowerPoint, Outlook и другие. ⚠️️ При установке выбери нужные приложения из списка и обязательно сними галочку с рекламы.","link":"https://mega.nz/file/t38AVCyT#C88Vypdj7tKmjv6BUlm_tXSCPtxa1J4ISuSKZY1FIbA","label":"Скачать","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:29","name":"Резалка 512×512","icon":"https://gniloe-kapito.github.io/progs/ico/pythonlogo.png","desc":"Python-скрипт для нарезки изображений под размер стикеров Telegram (512×512). Минималистичный инструмент без лишнего — закинул фото, получил готовые стикеры.","link":"https://github.com/gniloe-kapito/rezalka-512x512","label":"На сайт","warn":null,"category":"utils","categoryName":"Утилиты"},{"id":"utils:30","name":"HDR to SDR","icon":"https://gniloe-kapito.github.io/progs/ico/pythonlogo.png","desc":"Python-конвертер HDR-видео в SDR. Пригодится при монтаже или публикации на платформах без поддержки HDR. Работа может быть нестабильной.","link":"https://github.com/gniloe-kapito/HDR_TO_SDR","label":"На сайт","warn":"Нестабильная работа","category":"utils","categoryName":"Утилиты"},{"id":"creative:0","name":"Upscayl","icon":"https://gniloe-kapito.github.io/progs/ico/upscayl.png","desc":"ИИ-апскейлер изображений на нейросетях: увеличивает фото и арты в 2–4× без потери качества. Работает офлайн прямо на GPU.","link":"https://github.com/upscayl/upscayl/releases/latest","label":"На сайт","warn":null,"category":"creative","categoryName":"Творчество"},{"id":"creative:1","name":"digiKam","icon":"https://gniloe-kapito.github.io/progs/ico/digikam.png","desc":"Профессиональный менеджер фотографий с открытым кодом: организация по тегам, геолокации и дате, встроенный RAW-редактор, пакетная обработка и экспорт.","link":"https://www.digikam.org/download/","label":"На сайт","warn":null,"category":"creative","categoryName":"Творчество"},{"id":"creative:2","name":"CapCut","icon":"https://gniloe-kapito.github.io/progs/ico/capcut.png","desc":"Популярный видеоредактор от ByteDance с простым монтажом, субтитрами, эффектами и ИИ-инструментами. Идеален для коротких роликов, Reels и TikTok.","link":"https://www.capcut.com/download-guidance","label":"На сайт","warn":null,"category":"creative","categoryName":"Творчество"},{"id":"creative:3","name":"DaVinci Resolve Studio 20","icon":"https://gniloe-kapito.github.io/progs/ico/davinci_resolve_studio_20.png","desc":"Профессиональный видеоредактор с цветокоррекцией, VFX и аудиомикшером. Studio-версия с расширенными возможностями.","link":"https://d.rutor.info/download/998844","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск","category":"creative","categoryName":"Творчество"},{"id":"creative:4","name":"FL Studio","icon":"https://gniloe-kapito.github.io/progs/ico/fl_studio.png","desc":"Профессиональная DAW для создания музыки, битов и сведения треков. Пожизненные бесплатные обновления.","link":"https://mega.nz/file/Q3kBETwa#ZN_iJ4im2i61r-i-cKdlwTae14tBfetpHPbrxsRXTMs","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск","category":"creative","categoryName":"Творчество"},{"id":"creative:5","name":"Adobe Photoshop","icon":"https://gniloe-kapito.github.io/progs/ico/adobe_photoshop.png","desc":"Профессиональный редактор изображений. Ретушь, дизайн, работа со слоями и фильтрами.","link":"https://drive.google.com/file/d/1p0OKceLjJw8e_0VpDaTCXVJRaVY3PclY/view?usp=sharing","label":"Скачать","warn":null,"category":"creative","categoryName":"Творчество"},{"id":"creative:6","name":"Adobe Premiere Pro","icon":"https://gniloe-kapito.github.io/progs/ico/adobe_premiere_pro.png","desc":"Профессиональный видеоредактор от Adobe. Монтаж, цветокоррекция, многодорожечный звук и экспорт в любые форматы.","link":"https://d.rutor.info/download/1031838","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск","category":"creative","categoryName":"Творчество"},{"id":"creative:7","name":"Adobe Illustrator","icon":"https://gniloe-kapito.github.io/progs/ico/adobe_illustrator.png","desc":"Векторный графический редактор. Логотипы, иллюстрации, иконки — в любом масштабе без потери качества.","link":"https://d.rutor.info/download/1058974","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск","category":"creative","categoryName":"Творчество"},{"id":"creative:8","name":"Adobe Audition","icon":"https://gniloe-kapito.github.io/progs/ico/adobe_audition.png","desc":"Профессиональный аудиоредактор: запись, монтаж, реставрация звука и сведение многодорожечных проектов.","link":"https://d.rutor.info/download/1031839","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск","category":"creative","categoryName":"Творчество"},{"id":"creative:9","name":"Adobe After Effects","icon":"https://gniloe-kapito.github.io/progs/ico/adobe_after_effects.png","desc":"Визуальные эффекты, моушн-дизайн и анимация. Стандарт индустрии для VFX и motion graphics.","link":"https://d.rutor.info/download/1008630","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск","category":"creative","categoryName":"Творчество"},{"id":"creative:10","name":"Мемный пак для монтажа","icon":"https://gniloe-kapito.github.io/progs/ico/meme_pack.png","desc":"Пак мемных звуков, переходов и прочего добра для монтажа: всё самое нужное в одном архиве.","link":"https://drive.google.com/file/d/1CcQFk_sFpnMaZJxzJGlMBjHR0KDXRWLP/view","label":"Скачать","warn":null,"category":"creative","categoryName":"Творчество"},{"id":"dev:0","name":"VS Code","icon":"https://gniloe-kapito.github.io/progs/ico/vs_code.png","desc":"Лёгкий и мощный редактор кода от Microsoft с огромной библиотекой расширений.","link":"https://code.visualstudio.com/","label":"На сайт","warn":null,"category":"dev","categoryName":"Для разработчиков"},{"id":"dev:1","name":"VS Studio","icon":"https://gniloe-kapito.github.io/progs/ico/vs_studio.png","desc":"Самая полная IDE для разработчиков .NET и C++ в Windows для создания веб-, облачных, настольных и мобильных приложений, сервисов и игр.","link":"https://visualstudio.microsoft.com/ru/downloads/","label":"На сайт","warn":null,"category":"dev","categoryName":"Для разработчиков"},{"id":"dev:2","name":"Git","icon":"https://gniloe-kapito.github.io/progs/ico/git.png","desc":"Система контроля версий. Необходима для работы с GitHub и любыми проектами.","link":"https://git-scm.com/download/win","label":"Скачать","warn":null,"category":"dev","categoryName":"Для разработчиков"},{"id":"dev:3","name":"PyCharm","icon":"https://gniloe-kapito.github.io/progs/ico/pycharm.png","desc":"Профессиональная среда разработки для Python от JetBrains.","link":"https://www.jetbrains.com/pycharm/download/","label":"На сайт","warn":null,"category":"dev","categoryName":"Для разработчиков"},{"id":"dev:4","name":"Node.js v25","icon":"https://gniloe-kapito.github.io/progs/ico/nodejs.png","desc":"JavaScript-среда выполнения на движке V8 для серверной разработки, скриптов и инструментов сборки. Версия 25.8.1 — актуальная.","link":"https://nodejs.org/dist/v25.8.1/node-v25.8.1-win-x64.zip","label":"Скачать","warn":null,"category":"dev","categoryName":"Для разработчиков"},{"id":"dev:5","name":"AutoHotkey v2","icon":"https://gniloe-kapito.github.io/progs/ico/autohotkey.png","desc":"Бесплатный язык скриптов для автоматизации Windows: горячие клавиши, макросы, переназначение кнопок и создание собственных утилит. Версия 2 — актуальная и рекомендуемая к использованию.","link":"https://www.autohotkey.com/download/ahk-v2.exe","label":"Скачать","warn":null,"category":"dev","categoryName":"Для разработчиков"},{"id":"libs:0","name":"Java 8","icon":"https://gniloe-kapito.github.io/progs/ico/java_8.png","desc":"Java 8 — лучшая версия для запуска Minecraft до версии 1.12 и старых программ.","link":"https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html","label":"На сайт","warn":null,"category":"libs","categoryName":"Библиотеки и среды"},{"id":"libs:1","name":"Java 17","icon":"https://gniloe-kapito.github.io/progs/ico/java_17.png","desc":"Java 17 — рекомендуемая версия для Minecraft 1.17–1.20 и современных Java-приложений.","link":"https://download.oracle.com/java/17/archive/jdk-17.0.11_windows-x64_bin.msi","label":"Скачать","warn":null,"category":"libs","categoryName":"Библиотеки и среды"},{"id":"libs:2","name":"Java 21","icon":"https://gniloe-kapito.github.io/progs/ico/java_21.png","desc":"Java 21 LTS — актуальная версия с долгосрочной поддержкой. Требуется для Minecraft 1.20.5+.","link":"https://download.oracle.com/java/21/archive/jdk-21.0.3_windows-x64_bin.msi","label":"Скачать","warn":null,"category":"libs","categoryName":"Библиотеки и среды"},{"id":"games:0","name":"Steam","icon":"https://gniloe-kapito.github.io/progs/ico/steam.png","desc":"Главная игровая платформа с тысячами игр, облачными сохранениями и магазином.","link":"https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe","label":"Скачать","warn":null,"category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:1","name":"Epic Games","icon":"https://gniloe-kapito.github.io/progs/ico/epic_games.png","desc":"Лаунчер с регулярными бесплатными раздачами популярных игр.","link":"https://store.epicgames.com/download","label":"На сайт","warn":null,"category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:2","name":"Riot Games","icon":"https://gniloe-kapito.github.io/progs/ico/riot_games.png","desc":"Лаунчер Riot для запуска League of Legends, Valorant, Teamfight Tactics и других игр студии.","link":"https://valorant.secure.dyn.riotcdn.net/channels/public/x/installer/current/live.live.eu.exe","label":"Скачать","warn":null,"category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:3","name":"Prism Launcher","icon":"https://gniloe-kapito.github.io/progs/ico/prism_launcher.png","desc":"Продвинутый лаунчер Minecraft с поддержкой нескольких аккаунтов, модпаков и кастомных инстанций.","link":"https://github.com/PrismLauncher/PrismLauncher/releases/download/10.0.5/PrismLauncher-Windows-MSVC-Setup-10.0.5.exe","label":"Скачать","warn":null,"category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:4","name":"UltiMC","icon":"https://gniloe-kapito.github.io/progs/ico/ultimc.webp","desc":"Лаунчер Minecraft без авторизации Mojang — позволяет играть на пиратском аккаунте с поддержкой модпаков.","link":"https://github.com/UltimMC/Launcher?tab=readme-ov-file","label":"На сайт","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск","category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:5","name":"Prism Launcher Cracked","icon":"https://gniloe-kapito.github.io/progs/ico/prism_launcher_cracked.png","desc":"Форк Prism Launcher с поддержкой пиратских аккаунтов Minecraft. Все функции оригинала + офлайн-режим.","link":"https://github.com/Diegiwg/PrismLauncher-Cracked/releases","label":"На сайт","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск","category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:6","name":"Voidstrap","icon":"https://gniloe-kapito.github.io/progs/ico/voidstrap.png","desc":"Альтернативный бутстраппер для Roblox с дополнительными настройками, быстрым запуском и обходом ограничений.","link":"https://github.com/midaskira/Voidstrap/releases/","label":"На сайт","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск","category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:7","name":"Cristalix","icon":"https://gniloe-kapito.github.io/progs/ico/cristalix.png","desc":"Лаунчер игрового сервера Cristalix — популярная Minecraft-платформа с уникальными мини-играми и режимами.","link":"https://cristalix.gg/content/launcher/Cristalix.exe","label":"Скачать","warn":null,"category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:8","name":"Majestic RP","icon":"https://gniloe-kapito.github.io/progs/ico/majestic_rp.png","desc":"Официальный лаунчер крупнейшего GTA 5 RolePlay-проекта Majestic — свыше 100 000 игроков ежедневно. Требуется лицензионная копия GTA V Legacy.","link":"https://cdn.majestic-files.net/launcher/cis/MajesticLauncherSetup.exe","label":"Скачать","warn":null,"category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:9","name":"GTA5RP","icon":"https://gniloe-kapito.github.io/progs/ico/gta5rp.png","desc":"Лаунчер популярного ролевого сервера GTA5RP на движке RAGE MP — десятки тысяч игроков онлайн. Требуется лицензионная копия GTA V.","link":"https://gta5rp.com/download","label":"На сайт","warn":null,"category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:10","name":"Lunar Client","icon":"https://gniloe-kapito.github.io/progs/ico/lunar_client.png","desc":"Оптимизированный лаунчер Minecraft с буст FPS, встроенными модами (minimap, keystrokes, fps-counter) и поддержкой всех версий.","link":"https://www.lunarclient.com/download","label":"На сайт","warn":null,"category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:11","name":"ExLoader","icon":"https://gniloe-kapito.github.io/progs/ico/exloader.png","desc":"Единая библиотека игровых модификаций: читы, боты, нейросети и скины для CS2 и других игр — WH, триггер-бот, аим, скинченджер. Всё бесплатно.","link":"https://data.exloader.net/ExLoader_Installer.exe","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск","category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:12","name":"Umbrella","icon":"https://gniloe-kapito.github.io/progs/ico/umbrella.png","desc":"Продвинутый игровой помощник для Dota 2 и Deadlock: доступ к 500+ скриптам — от анализа матчей до мап-хака, ESP и аимбота. Создай папку C:\\Umbrella и сохрани лаунчер туда.","link":"https://mega.nz/file/RyMAzJCZ#3RJ-pRk4EU_Vto9Ezaz3DSO1DqOTr8QQdEwv1-upK_s","label":"Скачать","warn":null,"category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:13","name":"SAM (Ачивки Steam)","icon":"https://gniloe-kapito.github.io/progs/ico/sam_achivki_steam.png","desc":"Утилита для управления достижениями в Steam: разблокировка и блокировка ачивок для любой игры в библиотеке.","link":"https://github.com/gibbed/SteamAchievementManager/releases","label":"На сайт","warn":null,"category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:14","name":"Forza Horizon 5 (Online Fix)","icon":"https://gniloe-kapito.github.io/progs/ico/forza_horizon_5.jpg","desc":"Гоночный симулятор открытого мира в Мексике. Версия с онлайн-фиксом для мультиплеера.","link":"https://d.rutor.info/download/1073448","label":"Скачать","warn":"Файл не проверялся на вирусы — скачивай на свой страх и риск","category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:15","name":"MCA Selector","icon":"https://gniloe-kapito.github.io/progs/ico/mca_selector1.ico","desc":"Инструмент для редактирования мира Minecraft на уровне чанков: удаление, экспорт и фильтрация регионов карты.","link":"https://github.com/Querz/mcaselector/releases","label":"На сайт","warn":null,"category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:16","name":"Cheat Engine","icon":"https://gniloe-kapito.github.io/progs/ico/cheat_engine.png","desc":"Мощный инструмент для редактирования памяти игр: поиск и изменение значений (здоровье, деньги, скорость) в однопользовательских играх.","link":"https://www.cheatengine.org/","label":"На сайт","warn":null,"category":"games","categoryName":"Игры и лаунчеры"},{"id":"games:17","name":"FPS Monitor","icon":"https://gniloe-kapito.github.io/progs/ico/fps_monitor.png","desc":"Игровой оверлей для мониторинга производительности в реальном времени: FPS, температуры CPU и GPU, загрузка, тактовые частоты и задержки прямо поверх игры.","link":"https://fpsmon.com/bin/fpsmon.exe","label":"Скачать","warn":null,"category":"games","categoryName":"Игры и лаунчеры"},{"id":"diagnostics:0","name":"CPU-Z","icon":"https://gniloe-kapito.github.io/progs/ico/cpu_z.jpg","desc":"Информация о процессоре, материнской плате, оперативной памяти и видеокарте.","link":"https://download.cpuid.com/cpu-z/cpu-z_2.10-en.exe","label":"Скачать","warn":null,"category":"diagnostics","categoryName":"Диагностика"},{"id":"diagnostics:1","name":"GPU-Z","icon":"https://gniloe-kapito.github.io/progs/ico/gpu_z.jpg","desc":"Детальная информация о видеокарте: частоты, температуры, объём памяти, пропускная способность и нагрузка в реальном времени.","link":"https://www.techpowerup.com/download/techpowerup-gpu-z/","label":"На сайт","warn":null,"category":"diagnostics","categoryName":"Диагностика"},{"id":"diagnostics:2","name":"CrystalDiskMark","icon":"https://gniloe-kapito.github.io/progs/ico/crystaldiskmark.png","desc":"Тест скорости жёсткого диска или SSD: последовательное и случайное чтение/запись. Быстро показывает реальную производительность накопителя.","link":"https://crystalmark.info/redirect.php?product=CrystalDiskMarkAoi","label":"Скачать","warn":null,"category":"diagnostics","categoryName":"Диагностика"},{"id":"diagnostics:3","name":"CrystalDiskInfo","icon":"https://gniloe-kapito.github.io/progs/ico/crystaldiskinfo.jpg","desc":"Мониторинг здоровья жёстких дисков и SSD через показатели S.M.A.R.T.","link":"https://crystalmark.info/en/software/crystaldiskinfo/","label":"На сайт","warn":null,"category":"diagnostics","categoryName":"Диагностика"},{"id":"diagnostics:4","name":"FurMark","icon":"https://gniloe-kapito.github.io/progs/ico/furmark.jpg","desc":"Стресс-тест для видеокарты. Максимально нагружает GPU для проверки стабильности, температур и охлаждения.","link":"https://geeks3d.com/furmark/","label":"На сайт","warn":null,"category":"diagnostics","categoryName":"Диагностика"},{"id":"diagnostics:5","name":"HWiNFO64","icon":"https://gniloe-kapito.github.io/progs/ico/hwinfo64.png","desc":"Самая подробная утилита для мониторинга всех датчиков системы: температуры, нагрузки, напряжений CPU, GPU, дисков в реальном времени.","link":"https://www.hwinfo.com/download/","label":"На сайт","warn":null,"category":"diagnostics","categoryName":"Диагностика"},{"id":"vpn:0","name":"Outline VPN","icon":"https://gniloe-kapito.github.io/progs/ico/outline_vpn.png","desc":"Простой VPN от Jigsaw (Google). Идеально для обхода блокировок.","link":"https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe","label":"Скачать","warn":null,"category":"vpn","categoryName":"VPN"},{"id":"vpn:1","name":"Amnezia VPN","icon":"https://gniloe-kapito.github.io/progs/ico/amnezia_vpn.png","desc":"Российский приватный VPN-клиент с открытым кодом на GitHub.","link":"https://github.com/amnezia-vpn/amnezia-client/releases/latest","label":"На сайт","warn":null,"category":"vpn","categoryName":"VPN"},{"id":"vpn:2","name":"Radmin VPN","icon":"https://gniloe-kapito.github.io/progs/ico/radmin_vpn.png","desc":"Бесплатный VPN для игры в локальную сеть: Minecraft, GTA и другие игры с друзьями по всему миру.","link":"https://download.radmin-vpn.com/download/files/Radmin_VPN_1.4.4642.1.exe","label":"Скачать","warn":null,"category":"vpn","categoryName":"VPN"},{"id":"vpn:3","name":"Windscribe VPN","icon":"https://gniloe-kapito.github.io/progs/ico/windscribe_vpn.png","desc":"VPN с щедрым бесплатным тарифом 10 ГБ/месяц, встроенным блокировщиком рекламы и серверами в 60+ странах.","link":"https://windscribe.com/install/desktop/windows","label":"Скачать","warn":null,"category":"vpn","categoryName":"VPN"},{"id":"vpn:4","name":"Planet VPN","icon":"https://gniloe-kapito.github.io/progs/ico/planet_vpn.png","desc":"Бесплатный VPN с серверами в 60+ странах и без ограничений по трафику на бесплатном тарифе. Уступает Windscribe по стабильности соединения, скорости и функциональности — Windscribe остаётся более надёжным выбором.","link":"https://planet-vpn-free.ru/thanks/","label":"На сайт","warn":null,"category":"vpn","categoryName":"VPN"},{"id":"vpn:5","name":"Пак для обхода блокировок","icon":"https://play-lh.googleusercontent.com/AQLJ_xKB1RKWtz-Tgrck1coak3wIQIkQgt5bJddb1Srt-bkSSxQlgKT6m3HGYGzrpzc","desc":"Готовый пак конфигураций и инструментов для обхода белых и чёрных списков блокировок. Всё необходимое в одном архиве.","link":"https://drive.google.com/file/d/1iyDdzusCSa6AKAyabT_ZPN-lmDnfPlC0/view?usp=sharing","label":"Скачать","warn":null,"category":"vpn","categoryName":"VPN"},{"id":"security:0","name":"Malwarebytes","icon":"https://gniloe-kapito.github.io/progs/ico/malwarebytes.png","desc":"Мощный антивирус и антималварь с защитой в реальном времени. Находит угрозы, которые пропускают обычные антивирусы. ⚠️️ Для скачивания может потребоваться VPN.","link":"https://www.malwarebytes.com/mwb-download/thankyou","label":"Скачать","warn":null,"category":"security","categoryName":"Безопасность"},{"id":"security:1","name":"Dr.Web CureIt","icon":"https://gniloe-kapito.github.io/progs/ico/dr_web_cureit.png","desc":"Бесплатный сканер вирусов с ежедневно обновляемыми базами. Не требует установки.","link":"https://free.drweb.ru/download+cureit/gr","label":"Скачать","warn":null,"category":"security","categoryName":"Безопасность"},{"id":"flash:0","name":"Flibustier64","icon":"https://gniloe-kapito.github.io/progs/ico/flibustier64.png","desc":"Официальный фан-сайт сборок Windows от Флибустьера — коллекция всех официальных и пересмотренных версий Windows от автора для установки на ПК.","link":"https://flibustier64.com/","label":"На сайт","warn":null,"category":"flash","categoryName":"Работа с флешками"},{"id":"flash:1","name":"Rufus","icon":"https://gniloe-kapito.github.io/progs/ico/rufus.png","desc":"Самая популярная программа для создания загрузочных флешек с Windows. Быстрая и надёжная.","link":"https://github.com/pbatard/rufus/releases/download/v4.5/rufus-4.5p.exe","label":"Скачать","warn":null,"category":"flash","categoryName":"Работа с флешками"},{"id":"flash:2","name":"WinPE Sergei Strelec 2026","icon":"https://gniloe-kapito.github.io/progs/ico/winpe_sergei_strelec.png","desc":"Загрузочный диск на базе Windows 11/10 PE для обслуживания ПК: работа с дисками и разделами, резервное копирование, восстановление данных, диагностика и установка Windows.","link":"https://pixeldrain.com/u/Hrta5fbs","label":"Скачать","warn":null,"category":"flash","categoryName":"Работа с флешками"},{"id":"flash:3","name":"Ventoy","icon":"https://gniloe-kapito.github.io/progs/ico/ventoy.png","desc":"Запись нескольких ISO-образов на одну флешку одновременно. Не нужно форматировать каждый раз.","link":"https://sourceforge.net/projects/ventoy/files/latest/download","label":"Скачать","warn":null,"category":"flash","categoryName":"Работа с флешками"},{"id":"flash:4","name":"balenaEtcher","icon":"https://gniloe-kapito.github.io/progs/ico/balenaetcher.png","desc":"Простая и надёжная запись образов Linux и других ОС на флешки и SD-карты.","link":"https://github.com/balena-io/etcher/releases/download/v1.19.21/balenaEtcher-1.19.21.Setup.exe","label":"Скачать","warn":null,"category":"flash","categoryName":"Работа с флешками"},{"id":"vm:0","name":"VirtualBox","icon":"https://gniloe-kapito.github.io/progs/ico/virtualbox.png","desc":"Бесплатная виртуальная машина от Oracle. Запускай Linux, Windows и другие ОС внутри своей системы.","link":"https://download.virtualbox.org/virtualbox/7.0.20/VirtualBox-7.0.20-163906-Win.exe","label":"Скачать","warn":null,"category":"vm","categoryName":"Виртуальные машины"},{"id":"vm:1","name":"VMware Workstation","icon":"https://gniloe-kapito.github.io/progs/ico/vmware_workstation.png","desc":"Профессиональная виртуальная машина с поддержкой снимков состояния, сети и высокой производительностью.","link":"https://mega.nz/file/licTgQQY#nHz94ziFh4gQg0K1cRS57Cn7zQ1LDIzWWpZ4mtaf35Y","label":"Скачать","warn":null,"category":"vm","categoryName":"Виртуальные машины"},{"id":"drivers:0","name":"NVIDIA App","icon":"https://gniloe-kapito.github.io/progs/ico/nvidia_app.png","desc":"Новое приложение NVIDIA: управление драйверами, запись реплеев с GeForce Experience и оптимизация игр.","link":"https://www.nvidia.com/en-us/software/nvidia-app/","label":"На сайт","warn":null,"category":"drivers","categoryName":"Драйверы"},{"id":"drivers:1","name":"AMD Software Adrenalin","icon":"https://gniloe-kapito.github.io/progs/ico/amd_software_adrenalin.webp","desc":"Официальная панель управления видеокартами AMD с драйверами, Radeon ReLive и настройкой производительности.","link":"https://www.amd.com/en/support/download/drivers.html","label":"На сайт","warn":null,"category":"drivers","categoryName":"Драйверы"}];
+const TOTAL = 110;
+
+// ── localStorage state ──
+const LS_KEY = 'apphub';
+const defaultState = { favorites: [], recent: [], installed: [], safeMode: false, hideInstalled: false, sort: 'default' };
+let state = loadState();
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return { ...defaultState };
+    const parsed = JSON.parse(raw);
+    return {
+      favorites: Array.isArray(parsed.favorites) ? parsed.favorites : [],
+      recent: Array.isArray(parsed.recent) ? parsed.recent.slice(0, 8) : [],
+      installed: Array.isArray(parsed.installed) ? parsed.installed : [],
+      safeMode: !!parsed.safeMode,
+      hideInstalled: !!parsed.hideInstalled,
+      sort: ['default','alpha','favorites-first'].includes(parsed.sort) ? parsed.sort : 'default',
+    };
+  } catch { return { ...defaultState }; }
+}
+function saveState() {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify({
+      favorites: state.favorites,
+      recent: state.recent,
+      installed: state.installed,
+      safeMode: state.safeMode,
+      hideInstalled: state.hideInstalled,
+      sort: state.sort,
+    }));
+  } catch {}
+}
+
+// ── UI state ──
+let query = '';
+let activeCat = 'all';
+let hydrated = false;
+const SKIP_INPUT = new Set(['INPUT','TEXTAREA','SELECT']);
+
+// ── Helpers ──
+function $(sel, root) { root = root || document; return root.querySelector(sel); }
+function $$(sel, root) { root = root || document; return Array.from(root.querySelectorAll(sel)); }
+function el(tag, attrs, kids) {
+  const e = document.createElement(tag);
+  if (attrs) for (const k in attrs) {
+    if (k === 'class') e.className = attrs[k];
+    else if (k === 'html') e.innerHTML = attrs[k];
+    else if (k.startsWith('on') && typeof attrs[k] === 'function') e.addEventListener(k.slice(2), attrs[k]);
+    else if (k === 'dataset') for (const d in attrs[k]) e.dataset[d] = attrs[k][d];
+    else e.setAttribute(k, attrs[k]);
+  }
+  if (kids) for (const k of (Array.isArray(kids) ? kids : [kids])) {
+    if (k == null) continue;
+    e.appendChild(typeof k === 'string' ? document.createTextNode(k) : k);
+  }
+  return e;
+}
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function highlight(text, q) {
+  if (!q) return escapeHtml(text);
+  const safe = q.trim();
+  if (!safe) return escapeHtml(text);
+  const escaped = safe.replace(/[.*+?^${}()|[\]\\]/g, '\$&');
+  const parts = text.split(new RegExp('(' + escaped + ')', 'gi'));
+  return parts.map(p => p.toLowerCase() === safe.toLowerCase() ? '<mark class="apphub-mark">' + escapeHtml(p) + '</mark>' : escapeHtml(p)).join('');
+}
+function getSourceDomain(link) {
+  try { const u = new URL(link); return u.hostname.replace(/^www\./, ''); }
+  catch { return 'ссылка'; }
+}
+function pluralPrograms(n) {
+  const m10 = n % 10, m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return 'программа';
+  if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return 'программы';
+  return 'программ';
+}
+function toast(msg, desc) {
+  const wrap = $('#toast-wrap');
+  const t = el('div', { class: 'toast' });
+  t.appendChild(el('div', {}, msg));
+  if (desc) t.appendChild(el('div', { class: 'toast-desc' }, desc));
+  wrap.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .25s'; setTimeout(() => t.remove(), 250); }, 2500);
+}
+
+// ── App lookup ──
+function findAppById(id) {
+  const [catId, idxStr] = id.split(':');
+  if (!catId || idxStr == null) return undefined;
+  const idx = Number(idxStr);
+  if (Number.isNaN(idx)) return undefined;
+  const cat = APPS_DATA.find(c => c.id === catId);
+  if (!cat) return undefined;
+  const app = cat.apps[idx];
+  if (!app) return undefined;
+  return Object.assign({}, app, { category: cat.id, categoryName: cat.name, id: id, index: idx });
+}
+
+// ── Filtering ──
+function getBaseFiltered() {
+  return FLAT.filter(a => {
+    if (state.safeMode && a.warn) return false;
+    if (state.hideInstalled && state.installed.includes(a.id)) return false;
+    return true;
+  });
+}
+function getSearched() {
+  const base = getBaseFiltered();
+  const q = query.trim().toLowerCase();
+  if (!q) return base;
+  return base.filter(a =>
+    a.name.toLowerCase().includes(q) ||
+    a.desc.toLowerCase().includes(q) ||
+    a.categoryName.toLowerCase().includes(q)
+  );
+}
+function getSorted(arr) {
+  const out = arr.slice();
+  if (state.sort === 'alpha') {
+    out.sort((a,b) => a.name.localeCompare(b.name, 'ru', { sensitivity:'base' }));
+  } else if (state.sort === 'favorites-first') {
+    out.sort((a,b) => {
+      const fa = state.favorites.includes(a.id) ? 0 : 1;
+      const fb = state.favorites.includes(b.id) ? 0 : 1;
+      return fa - fb;
+    });
+  }
+  return out;
+}
+
+// ── Render pills ──
+function renderPills() {
+  const wrap = $('#pills');
+  wrap.innerHTML = '';
+  const mk = (label, count, active, accent2, onClick) => {
+    const b = el('button', {
+      class: 'pill' + (active ? ' active' : '') + (accent2 && active ? ' accent2' : ''),
+      'aria-pressed': active ? 'true' : 'false',
+      type: 'button',
+      onClick: (e) => { onClick(e.currentTarget); },
+    });
+    b.appendChild(el('span', {}, label));
+    b.appendChild(el('span', { class: 'count' }, '· ' + count));
+    return b;
+  };
+  wrap.appendChild(mk('Все', TOTAL, activeCat === 'all', false, (btn) => { setActiveCat('all'); btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); }));
+  if (state.favorites.length > 0) {
+    wrap.appendChild(mk('⭐ Избранное', state.favorites.length, activeCat === 'favorites', true, (btn) => { setActiveCat('favorites'); btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); }));
+  }
+  APPS_DATA.forEach(c => {
+    wrap.appendChild(mk(c.name, c.apps.length, activeCat === c.id, false, (btn) => { setActiveCat(c.id); btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); }));
+  });
+}
+
+// ── Card factory ──
+function makeCard(app, q, observer) {
+  const isFav = state.favorites.includes(app.id);
+  const isInst = state.installed.includes(app.id);
+  const label = app.label === 'Скачать' ? 'Скачать' : 'На сайт';
+  const card = el('article', {
+    class: 'card' + (isInst ? ' installed' : ''),
+    role: 'button',
+    tabindex: '0',
+    'aria-label': 'Открыть карточку: ' + app.name,
+    onClick: () => openAppModal(app),
+    onKeydown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openAppModal(app); } },
+  });
+  card.appendChild(el('span', { class: 'sheen' }));
+  card.appendChild(el('span', { class: 'accent-rail' }));
+
+  // Favorite button
+  const fav = el('button', {
+    class: 'fav-btn' + (isFav ? ' active' : ''),
+    type: 'button',
+    'aria-label': isFav ? 'Убрать из избранного' : 'Добавить в избранное',
+    'aria-pressed': isFav ? 'true' : 'false',
+    onClick: (e) => { e.stopPropagation(); toggleFav(app.id); },
+  });
+  fav.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="' + (isFav ? 'currentColor' : 'none') + '" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+  card.appendChild(fav);
+
+  // Head
+  const head = el('div', { class: 'card-head' });
+  const iconWrap = el('div', { class: 'card-icon' });
+  const fallbackBg = 'linear-gradient(135deg,var(--accent),var(--accent2))';
+  const ic = el('img', { src: app.icon, alt: 'Иконка ' + app.name, loading: 'lazy' });
+  ic.onerror = () => {
+    iconWrap.innerHTML = '';
+    const fb = el('div', { class: 'fallback' }, app.name.charAt(0).toUpperCase() || '?');
+    iconWrap.appendChild(fb);
+  };
+  iconWrap.appendChild(ic);
+  head.appendChild(iconWrap);
+  const headText = el('div', { style: 'min-width:0;flex:1' });
+  headText.appendChild(el('h3', { class: 'card-name', html: highlight(app.name, q) }));
+  headText.appendChild(el('p', { class: 'card-cat' }, app.categoryName));
+  head.appendChild(headText);
+  if (isInst) {
+    const badge = el('span', { class: 'installed-badge', 'aria-label': 'Установлено', title: 'Установлено' });
+    badge.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+    head.appendChild(badge);
+  }
+  card.appendChild(head);
+
+  // Description
+  card.appendChild(el('p', { class: 'card-desc', html: highlight(app.desc, q) }));
+
+  // Warn badge
+  if (app.warn) {
+    const w = el('span', { class: 'warn-badge' });
+    w.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>';
+    w.appendChild(document.createTextNode(' ' + app.warn));
+    card.appendChild(w);
+  }
+
+  // Source domain
+  card.appendChild(el('span', { class: 'source-domain' }, '↗ ' + getSourceDomain(app.link)));
+
+  // Actions
+  const actions = el('div', { class: 'card-actions', onClick: (e) => e.stopPropagation() });
+  const dl = el('a', {
+    class: 'btn-primary',
+    href: app.link,
+    target: '_blank',
+    rel: 'noopener noreferrer',
+    'aria-label': label + ' ' + app.name,
+  });
+  dl.innerHTML = (app.label === 'Скачать'
+    ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>'
+    : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>');
+  dl.appendChild(document.createTextNode(' ' + label));
+  actions.appendChild(dl);
+
+  const mkGhost = (label, title, svg, onClick, activeKey) => {
+    const b = el('button', {
+      class: 'btn-ghost' + (activeKey ? ' active' : ''),
+      type: 'button',
+      'aria-label': label,
+      'aria-pressed': activeKey ? 'true' : 'false',
+      title: title,
+      onClick: onClick,
+    });
+    b.innerHTML = svg;
+    return b;
+  };
+  actions.appendChild(mkGhost('Копировать ссылку', 'Копировать ссылку',
+    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>',
+    (e) => { e.stopPropagation(); copyLink(app); }));
+  card.appendChild(actions);
+
+  if (observer) observer.observe(card);
+  return card;
+}
+
+// ── Actions ──
+function toggleFav(id) {
+  const was = state.favorites.includes(id);
+  if (was) state.favorites = state.favorites.filter(f => f !== id);
+  else state.favorites.push(id);
+  saveState();
+  const app = findAppById(id);
+  toast(was ? 'Удалено из избранного' : 'Добавлено в избранное', app ? app.name : '');
+  renderAll();
+}
+function toggleInstalled(id) {
+  const was = state.installed.includes(id);
+  if (was) state.installed = state.installed.filter(f => f !== id);
+  else state.installed.push(id);
+  saveState();
+  const app = findAppById(id);
+  toast(was ? 'Снята отметка об установке' : 'Отмечено как установленное', app ? app.name : '');
+  renderAll();
+}
+function copyLink(app) {
+  navigator.clipboard.writeText(app.link).then(
+    () => toast('Ссылка скопирована', app.name),
+    () => toast('Не удалось скопировать ссылку')
+  );
+}
+function shareLink(app) {
+  if (navigator.share) {
+    navigator.share({ title: app.name, text: app.desc, url: app.link }).catch(() => {});
+  } else {
+    copyLink(app);
+  }
+}
+function addRecent(id) {
+  state.recent = [id, ...state.recent.filter(r => r !== id)].slice(0, 8);
+  saveState();
+}
+
+// ── Modal ──
+function openAppModal(app) {
+  addRecent(app.id);
+  const isFav = state.favorites.includes(app.id);
+  const isInst = state.installed.includes(app.id);
+  const Icon = app.label === 'Скачать'
+    ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>'
+    : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>';
+  const inner = $('#app-modal-inner');
+  inner.innerHTML = '';
+  const header = el('div', { class: 'modal-header' });
+  const closeBtn = el('button', { class: 'modal-close', type: 'button', 'aria-label': 'Закрыть', onClick: () => closeModal('app-modal') });
+  closeBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>';
+  header.appendChild(closeBtn);
+  const headRow = el('div', { class: 'modal-head-row' });
+  const iconWrap = el('div', { class: 'modal-icon' });
+  const ic = el('img', { src: app.icon, alt: 'Иконка ' + app.name });
+  ic.onerror = () => { iconWrap.innerHTML = ''; const fb = el('div', { class: 'fallback' }, app.name.charAt(0).toUpperCase() || '?'); iconWrap.appendChild(fb); };
+  iconWrap.appendChild(ic);
+  headRow.appendChild(iconWrap);
+  const txt = el('div', { style: 'min-width:0;flex:1' });
+  txt.appendChild(el('h2', { class: 'modal-name' }, app.name));
+  const badges = el('div', { class: 'modal-badges' });
+  badges.appendChild(el('span', { class: 'badge badge-cat' }, app.categoryName));
+  badges.appendChild(el('span', { class: 'badge badge-src' }, '↗ ' + getSourceDomain(app.link)));
+  if (isInst) {
+    const ib = el('span', { class: 'badge badge-inst' });
+    ib.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+    ib.appendChild(document.createTextNode(' Установлено'));
+    badges.appendChild(ib);
+  }
+  txt.appendChild(badges);
+  headRow.appendChild(txt);
+  header.appendChild(headRow);
+  if (app.warn) {
+    const w = el('div', { class: 'modal-warn' });
+    w.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:2px"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>';
+    const wTxt = el('div');
+    wTxt.appendChild(el('p', { class: 'modal-warn-title' }, 'Предупреждение'));
+    wTxt.appendChild(el('p', { class: 'modal-warn-text' }, app.warn));
+    w.appendChild(wTxt);
+    header.appendChild(w);
+  }
+  inner.appendChild(header);
+
+  const body = el('div', { class: 'modal-body' });
+  body.appendChild(el('p', { class: 'modal-desc' }, app.desc));
+  const linkBox = el('div', { class: 'modal-link-box' });
+  linkBox.appendChild(el('p', { class: 'modal-link-label' }, 'Ссылка на источник'));
+  linkBox.appendChild(el('p', { class: 'modal-link-url' }, app.link));
+  body.appendChild(linkBox);
+  const actions = el('div', { class: 'modal-actions' });
+  const dl = el('a', { class: 'modal-btn-primary', href: app.link, target: '_blank', rel: 'noopener noreferrer' });
+  dl.innerHTML = Icon;
+  dl.appendChild(document.createTextNode(' ' + app.label));
+  actions.appendChild(dl);
+  const copyBtn = el('button', { class: 'modal-btn-ghost', type: 'button', 'aria-label': 'Копировать ссылку', onClick: () => copyLink(app) });
+  copyBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg> Копировать';
+  actions.appendChild(copyBtn);
+  body.appendChild(actions);
+
+  const toggles = el('div', { class: 'modal-toggles' });
+  const lbl1 = el('label', { class: 'modal-toggle-row', for: 'modal-installed' });
+  const cb = el('input', { type: 'checkbox', id: 'modal-installed', checked: isInst });
+  cb.addEventListener('change', () => { toggleInstalled(app.id); });
+  lbl1.appendChild(cb);
+  lbl1.appendChild(el('span', {}, 'Я уже установил(а)'));
+  toggles.appendChild(lbl1);
+  const favBtn = el('button', { class: 'modal-fav-btn' + (isFav ? ' active' : ''), type: 'button', 'aria-pressed': isFav ? 'true' : 'false', onClick: () => { toggleFav(app.id); /* re-render modal */ const updated = findAppById(app.id); if (updated) openAppModal(updated); } });
+  favBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="' + (isFav ? 'currentColor' : 'none') + '" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+  favBtn.appendChild(document.createTextNode(' ' + (isFav ? 'В избранном' : 'Добавить в избранное')));
+  toggles.appendChild(favBtn);
+  body.appendChild(toggles);
+  inner.appendChild(body);
+
+  openModal('app-modal');
+}
+
+function openModal(id) { $('#' + id).classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeModal(id) { $('#' + id).classList.remove('open'); document.body.style.overflow = ''; }
+function closeAllModals() { $$('.modal-overlay').forEach(m => m.classList.remove('open')); document.body.style.overflow = ''; }
+function anyModalOpen() { return $$('.modal-overlay').some(m => m.classList.contains('open')); }
+
+// ── Render ──
+let cardObserver = null;
+function setupObserver() {
+  if (cardObserver) cardObserver.disconnect();
+  cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); cardObserver.unobserve(e.target); } });
+  }, { rootMargin: '-50px', threshold: 0.05 });
+}
+
+function renderRecent() {
+  const mount = $('#recent-mount');
+  if (mount) mount.innerHTML = '';
+  return;
+}
+
+function renderFavorites(sorted, q) {
+  const sec = $('#favorites-section');
+  const grid = $('#favorites-grid');
+  grid.innerHTML = '';
+  if (activeCat !== 'all' || q) { sec.style.display = 'none'; return; }
+  const favs = sorted.filter(a => state.favorites.includes(a.id));
+  if (favs.length === 0) { sec.style.display = 'none'; return; }
+  sec.style.display = '';
+  favs.forEach((app, i) => grid.appendChild(makeCard(app, q, cardObserver)));
+}
+
+function renderCategories(sorted, q) {
+  const mount = $('#categories-mount');
+  mount.innerHTML = '';
+  let groups;
+  if (q) {
+    const map = new Map();
+    for (const app of sorted) {
+      const list = map.get(app.category) || [];
+      list.push(app);
+      map.set(app.category, list);
+    }
+    groups = APPS_DATA.filter(c => map.has(c.id)).map(c => ({ id: c.id, name: c.name, apps: map.get(c.id) || [] }));
+  } else if (activeCat === 'favorites') {
+    groups = [{ id: 'favorites', name: '⭐ Избранное', apps: sorted.filter(a => state.favorites.includes(a.id)) }];
+  } else if (activeCat === 'all') {
+    groups = APPS_DATA.map(c => ({ id: c.id, name: c.name, apps: sorted.filter(a => a.category === c.id) })).filter(c => c.apps.length > 0);
+  } else {
+    const cat = APPS_DATA.find(c => c.id === activeCat);
+    if (!cat) return;
+    groups = [{ id: cat.id, name: cat.name, apps: sorted.filter(a => a.category === cat.id) }];
+  }
+  groups.forEach(g => {
+    const sec = el('section', { class: 'section' });
+    const title = el('h2', { class: 'section-title' });
+    title.appendChild(el('span', { class: 'bar' }));
+    title.appendChild(el('span', {}, g.name));
+    title.appendChild(el('span', { class: 'count' }, String(g.apps.length)));
+    sec.appendChild(title);
+    if (g.apps.length === 0) {
+      sec.appendChild(el('p', { style: 'font-size:0.875rem;color:var(--muted);padding:24px 0;text-align:center' }, 'В этой категории ничего не найдено по вашему запросу.'));
+    } else {
+      const grid = el('div', { class: 'grid' });
+      g.apps.forEach(app => grid.appendChild(makeCard(app, q, cardObserver)));
+      sec.appendChild(grid);
+    }
+    mount.appendChild(sec);
+  });
+}
+
+function renderEmpty(searchedCount) {
+  const empty = $('#empty-state');
+  const q = query.trim().toLowerCase();
+  if (q && searchedCount === 0) { empty.style.display = ''; } else { empty.style.display = 'none'; }
+}
+
+function renderAll() {
+  setupObserver();
+  renderPills();
+  const sorted = getSorted(getSearched());
+  const q = query.trim().toLowerCase();
+  renderFavorites(sorted, q);
+  renderCategories(sorted, q);
+  renderEmpty(sorted.length);
+  // Search meta
+  const meta = $('#search-meta');
+  if (q) { meta.style.display = ''; meta.innerHTML = 'Найдено <span class="num">' + sorted.length + '</span> ' + pluralPrograms(sorted.length); }
+  else { meta.style.display = 'none'; }
+  $('#footer-total').textContent = TOTAL;
+  $('#footer-cats').textContent = APPS_DATA.length;
+  // Settings menu checks
+  ['default','alpha','favorites-first'].forEach(s => {
+    const c = $('#sort-' + s + '-check');
+    if (c) c.style.display = (state.sort === s) ? '' : 'none';
+  });
+  var sc = $('#safe-check'); if (sc) sc.style.display = state.safeMode ? '' : 'none';
+  var hc = $('#hide-inst-check'); if (hc) hc.style.display = state.hideInstalled ? '' : 'none';
+  syncUrl();
+}
+
+function setActiveCat(id) { activeCat = id; renderAll(); }
+
+// ── URL sync ──
+function syncUrl() {
+  if (!hydrated) return;
+  const sp = new URLSearchParams();
+  if (query) sp.set('q', query);
+  if (activeCat !== 'all') sp.set('cat', activeCat);
+  if (state.sort !== 'default') sp.set('sort', state.sort);
+  if (state.safeMode) sp.set('safe', '1');
+  if (state.hideInstalled) sp.set('hideInst', '1');
+  const qs = sp.toString();
+  const newUrl = qs ? ('?' + qs) : window.location.pathname;
+  window.history.replaceState(null, '', newUrl);
+}
+
+function hydrateFromUrl() {
+  const sp = new URLSearchParams(window.location.search);
+  const q = sp.get('q') || '';
+  const cat = sp.get('cat') || 'all';
+  const so = sp.get('sort');
+  const sm = sp.get('safe') === '1';
+  const hi = sp.get('hideInst') === '1';
+  if (q) query = q;
+  if (cat) activeCat = cat;
+  if (so === 'default' || so === 'alpha' || so === 'favorites-first') state.sort = so;
+  if (sm) state.safeMode = true;
+  if (hi) state.hideInstalled = true;
+  $('#search').value = q;
+  hydrated = true;
+}
+
+// ── Export / Import ──
+function exportData() {
+  const data = {
+    favorites: state.favorites,
+    installed: state.installed,
+    recent: state.recent,
+    safeMode: state.safeMode,
+    hideInstalled: state.hideInstalled,
+    sort: state.sort,
+    version: 1,
+    exportedAt: new Date().toISOString(),
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const today = new Date().toISOString().slice(0, 10);
+  a.href = url;
+  a.download = 'apphub-backup-' + today + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('Данные экспортированы', 'apphub-backup-' + today + '.json');
+}
+let pendingImport = null;
+function handleImportFile(e) {
+  const file = e.target.files && e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  file.text().then(txt => {
+    try {
+      const parsed = JSON.parse(txt);
+      if (!Array.isArray(parsed.favorites) || !Array.isArray(parsed.installed) || !Array.isArray(parsed.recent) ||
+          typeof parsed.safeMode !== 'boolean' || typeof parsed.hideInstalled !== 'boolean' ||
+          !['default','alpha','favorites-first'].includes(parsed.sort)) {
+        toast('Неверный формат файла', 'Ожидался JSON-бэкап AppHub.');
+        return;
+      }
+      pendingImport = parsed;
+      openModal('confirm-modal');
+    } catch {
+      toast('Не удалось прочитать файл', 'Проверь, что это корректный JSON.');
+    }
+  });
+}
+function confirmImport() {
+  if (!pendingImport) return;
+  state.favorites = pendingImport.favorites.filter(x => typeof x === 'string');
+  state.installed = pendingImport.installed.filter(x => typeof x === 'string');
+  state.recent = pendingImport.recent.filter(x => typeof x === 'string').slice(0, 8);
+  state.safeMode = !!pendingImport.safeMode;
+  state.hideInstalled = !!pendingImport.hideInstalled;
+  state.sort = pendingImport.sort;
+  pendingImport = null;
+  saveState();
+  closeModal('confirm-modal');
+  toast('Данные импортированы', 'Избранное, установленные и история восстановлены.');
+  renderAll();
+}
+
+// ── Wire up ──
+function focusSearch() { const s = $('#search'); s.focus(); s.select(); }
+function setQuery(v) { query = v; renderAll(); }
+
+function init() {
+  hydrateFromUrl();
+  // Search
+  $('#search').addEventListener('input', (e) => setQuery(e.target.value));
+  // Logo
+  $('#logo-link').addEventListener('click', (e) => { e.preventDefault(); activeCat = 'all'; query = ''; $('#search').value = ''; renderAll(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  // Reset button
+  $('#reset-btn').addEventListener('click', () => { query = ''; activeCat = 'all'; $('#search').value = ''; renderAll(); $('#search').focus(); });
+  var cok = $('#confirm-ok'); if (cok) cok.addEventListener('click', confirmImport);
+  var ccan = $('#confirm-cancel'); if (ccan) ccan.addEventListener('click', () => { pendingImport = null; closeModal('confirm-modal'); });
+  // Warn count
+  const wc = FLAT.filter(a => a.warn).length;
+  var wcel = $('#warn-count'); if (wcel) wcel.textContent = wc;
+  // Keyboard help
+    // Modal close (overlay click + close buttons)
+  $$('.modal-overlay').forEach(ov => ov.addEventListener('click', (e) => { if (e.target === ov) closeModal(ov.id); }));
+  $$('[data-close]').forEach(b => b.addEventListener('click', () => closeModal(b.dataset.close)));
+  // Back-to-top
+  const fab = $('#fab-top');
+  window.addEventListener('scroll', () => { fab.classList.toggle('show', window.scrollY > 400); }, { passive: true });
+  fab.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    const target = e.target;
+    const isTyping = target && (SKIP_INPUT.has(target.tagName) || target.isContentEditable);
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); focusSearch(); return; }
+    if (e.key === 'Escape') {
+      if (anyModalOpen()) { closeAllModals(); return; }
+      const s = $('#search');
+      if (s.value) { setQuery(''); s.value = ''; return; }
+      s.blur();
+      return;
+    }
+    if (e.key === '/' && !isTyping && !e.metaKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); focusSearch(); return; }
+    });
+  renderAll();
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+else init();
+
+// ── Drag-to-scroll for category pills ──
+(function(){
+  var pills = document.getElementById('pills');
+  if(!pills) return;
+  var dragging=false, startX=0, scrollLeft=0, moved=false;
+  pills.addEventListener('mousedown', function(e){
+    dragging=true; moved=false; startX=e.pageX-pills.offsetLeft; scrollLeft=pills.scrollLeft;
+    pills.style.cursor='grabbing'; pills.style.userSelect='none';
+  });
+  pills.addEventListener('mousemove', function(e){
+    if(!dragging) return;
+    e.preventDefault();
+    var x=e.pageX-pills.offsetLeft; var walk=x-startX;
+    if(Math.abs(walk)>4) moved=true;
+    pills.scrollLeft=scrollLeft-walk;
+  });
+  function endDrag(){ if(!dragging) return; dragging=false; pills.style.cursor='grab'; pills.style.userSelect=''; setTimeout(function(){moved=false;},50); }
+  pills.addEventListener('mouseup', endDrag);
+  pills.addEventListener('mouseleave', endDrag);
+  pills.addEventListener('click', function(e){ if(moved){ e.preventDefault(); e.stopPropagation(); } }, true);
+})();
+
+</script>
+</body>
+</html>
