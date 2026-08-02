@@ -894,9 +894,15 @@ function renderMarkdown(text) {
   // Курсив *...*  (не трогаем **)
   html = html.replace(/(^|[^*])\*(?!\s)([^*\n]+?)\*(?!\*)/g, '$1<em>$2</em>');
 
-  // Ссылки [текст](url)
+  // Ссылки [текст](url) — для обратной совместимости
   html = html.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,
     '<a href="$2" target="_blank" rel="noopener">$1</a>');
+
+  // Авто-линкификация bare URLs (формат "URL: https://..." или просто https://...)
+  // Не трогаем URL внутри уже созданных href="..." атрибутов.
+  // Lookbehind: не матчить если перед URL стоит href=" или > (внутри тега)
+  html = html.replace(/(?<!href="|>)(https?:\/\/[^\s<>"')\]]+)/g,
+    '<a href="$1" target="_blank" rel="noopener">$1</a>');
 
   // Списки и абзацы — построчно
   const lines = html.split('\n');
