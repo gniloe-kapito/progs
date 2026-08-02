@@ -850,12 +850,12 @@ buildUI();
 // ═══ НАСТРОЙКА ════════════════════════════════════════════
 // Впиши сюда URL твоего Cloudflare Worker после деплоя.
 // Инструкция — в cloudflare-worker/README.md
-const WORKER_URL = "https://apphub-assistant.danvox123hyu.workers.dev/api/chat";
+const WORKER_URL = "https://apphub-assistant.ТВОЙ-САБДОМЕН.workers.dev/api/chat";
 // ══════════════════════════════════════════════════════════
 
-const HISTORY_KEY = "apphub_chat_history";
-const MAX_STORED = 50;   // храним в localStorage
-const MAX_SEND   = 20;   // отправляем API (последние N)
+// История только в памяти — сбрасывается при перезагрузке страницы.
+// Отправляем API последние N сообщений.
+const MAX_SEND = 20;
 
 // ─── DOM ───
 const chatFab       = document.getElementById('chatFab');
@@ -867,28 +867,8 @@ const chatInput     = document.getElementById('chatInput');
 const chatSendBtn   = document.getElementById('chatSendBtn');
 
 let isStreaming = false;
+// История чата хранится только в памяти — при перезагрузке страницы очищается.
 let chatHistory = [];
-
-// ─── История чата (localStorage) ───
-function loadHistory() {
-  try {
-    const raw = localStorage.getItem(HISTORY_KEY);
-    chatHistory = raw ? JSON.parse(raw) : [];
-    if (!Array.isArray(chatHistory)) chatHistory = [];
-  } catch {
-    chatHistory = [];
-  }
-}
-
-function saveHistory() {
-  try {
-    // Храним только последние MAX_STORED сообщений
-    const trimmed = chatHistory.slice(-MAX_STORED);
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(trimmed));
-  } catch {
-    // localStorage переполнен — тихо игнорируем
-  }
-}
 
 // ─── Markdown → HTML (минимальный безопасный парсер) ───
 function escapeHtml(text) {
@@ -1137,7 +1117,6 @@ async function sendMessage() {
   // Добавляем сообщение пользователя
   chatHistory.push({ role: 'user', content: text });
   appendMsg('user', text);
-  saveHistory();
 
   // Очищаем ввод
   chatInput.value = '';
@@ -1173,7 +1152,6 @@ async function sendMessage() {
         aiBubble.innerHTML = renderMarkdown(fullText);
       }
       chatHistory.push({ role: 'assistant', content: fullText });
-      saveHistory();
       isStreaming = false;
       chatSendBtn.disabled = false;
       scrollToBottom();
@@ -1228,14 +1206,13 @@ chatClearBtn.addEventListener('click', () => {
   if (chatHistory.length === 0) return;
   if (confirm('Очистить историю чата?')) {
     chatHistory = [];
-    saveHistory();
     renderAllMessages();
     scrollToBottom();
   }
 });
 
 // ─── Инициализация ───
-loadHistory();
+// История не загружается из localStorage — каждый раз чистый чат.
 renderAllMessages();
 </script>
 </body>
